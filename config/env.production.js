@@ -4,5 +4,7 @@ module.exports = {
   authUri: '//localhost:8086/auth/authserver',
   userApi: '//10.254.9.31:9090/user-server',
   commonApi: '//10.254.9.31:8763',
-  devUrl: 'localhost:8086'
+  devUrl: 'localhost:8086',
+
+  clientId: 'prod-cr'
 }

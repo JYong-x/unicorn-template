@@ -4,11 +4,12 @@ const webpack = require('webpack')
 
 const path = require('path')
 const resolve = (dir) => path.join(__dirname, dir)
+const config = require('./config')
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 // const IS_DEV = ['development', 'dev'].includes(process.env.NODE_ENV)
 
 module.exports = {
-  publicPath: IS_PROD ? '/cr/' : '/', // 默认'/'，部署应用包时的基本 URL
+  publicPath: IS_PROD ? `${config.publicPath}` : '/', // 默认'/'，部署应用包时的基本 URL
   outputDir: 'dist', // 'dist', 生产环境构建文件的目录
   assetsDir: 'static', // 相对于outputDir的静态资源(js、css、img、fonts)目录
   lintOnSave: true,
@@ -57,7 +58,6 @@ module.exports = {
       .set('vue$', 'vue/dist/vue.esm.js')
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))
-      .set('scss', resolve('src/assets/scss'))
       .set('components', resolve('src/components'))
       .set('plugins', resolve('src/plugins'))
       .set('views', resolve('src/views'))
@@ -65,7 +65,6 @@ module.exports = {
       .set('store', resolve('src/store'))
       .set('layouts', resolve('src/layouts'))
       .set('api', resolve('src/api'))
-      .set('static', resolve('src/static'))
 
     // svg
     config.module
@@ -148,21 +147,21 @@ module.exports = {
         pathRewrite: {
           '^/api': '/'
         }
-      },
-      '/auth': {
-        target: 'http://10.254.9.31:8888',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/auth': '/'
-        }
-      },
-      '/isse-auth': {
-        target: 'https://10.254.9.31:8888',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/isse-auth': '/'
-        }
       }
+      // '/auth': {
+      //   target: 'http://10.254.9.31:8888',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/auth': '/'
+      //   }
+      // },
+      // '/isse-auth': {
+      //   target: 'https://10.254.9.31:8888',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/isse-auth': '/'
+      //   }
+      // }
     }
   }
 }

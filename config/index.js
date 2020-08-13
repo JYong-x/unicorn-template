@@ -1,4 +1,4 @@
-const { authHost, authUri, userApi, commonApi, devUrl } = require('./env.' +
+const { authHost, authUri, userApi, commonApi, devUrl, clientId } = require('./env.' +
   process.env.NODE_ENV)
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
   redirect_uri: `http://${devUrl}/token-index`,
 
   // 客户端相关标识，请从认证服务器申请
-  clientId: 'cr-isse',
+  clientId: clientId,
   client_secret: 'app-a-1234',
   // 申请的权限范围
   scope: 'all',
