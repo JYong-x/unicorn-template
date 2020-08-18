@@ -3,13 +3,13 @@ import store from './store'
 
 // import NProgress from 'nprogress' // progress bar
 // import '@/components/NProgress/nprogress.less' // progress bar custom style
-import notification from 'ant-design-vue/es/notification'
+// import notification from 'ant-design-vue/es/notification'
 // import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { getToken } from '@/utils/auth'
 
 // NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
+const whiteList = ['Home', 'login', 'register', 'registerResult'] // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   // NProgress.start() // start progress bar
@@ -44,10 +44,10 @@ router.beforeEach((to, from, next) => {
             })
           })
           .catch(() => {
-            notification.error({
-              message: '错误',
-              description: '请求用户信息失败，请重试'
-            })
+            // notification.error({
+            //   message: '错误',
+            //   description: '请求用户信息失败，请重试'
+            // })
             store.dispatch('Logout').then(() => {
               next({ path: '/user/login', query: { redirect: to.fullPath }})
             })
