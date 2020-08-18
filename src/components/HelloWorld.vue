@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import Cookie from 'js-cookie'
 export default {
   name: 'HelloWorld',
   props: {
@@ -128,6 +129,9 @@ export default {
       type: String,
       default: ''
     }
+  },
+  created() {
+    Cookie.set('cookie', 1, { expires: new Date(new Date().getTime() + 1 * 60 * 1000) })
   }
 }
 </script>
