@@ -57,14 +57,17 @@ module.exports = {
     config.resolve.alias
       .set('vue$', 'vue/dist/vue.esm.js')
       .set('@', resolve('src'))
+      .set('api', resolve('src/api'))
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
-      .set('plugins', resolve('src/plugins'))
-      .set('views', resolve('src/views'))
+      .set('icons', resolve('src/icons'))
+      .set('layouts', resolve('src/layouts'))
       .set('router', resolve('src/router'))
       .set('store', resolve('src/store'))
-      .set('layouts', resolve('src/layouts'))
-      .set('api', resolve('src/api'))
+      .set('styles', resolve('src/styles'))
+      .set('utils', resolve('src/utils'))
+      .set('views', resolve('src/views'))
+      .set('plugins', resolve('src/plugins'))
 
     // svg
     config.module
