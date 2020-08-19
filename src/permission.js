@@ -1,24 +1,22 @@
 import router from './router'
 import store from './store'
 
-// import NProgress from 'nprogress' // progress bar
+import NProgress from 'nprogress' // progress bar
 // import '@/components/NProgress/nprogress.less' // progress bar custom style
 // import notification from 'ant-design-vue/es/notification'
-// import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { getToken } from '@/utils/auth'
 
-// NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false })
 
-const whiteList = ['Home', 'login', 'register', 'registerResult'] // no redirect whitelist
+const whiteList = ['Home', 'login', 'register', 'registerResult']
 
 router.beforeEach((to, from, next) => {
-  // NProgress.start() // start progress bar
+  NProgress.start()
   const hasToken = getToken()
   if (hasToken) {
-    /* has token */
     if (to.path === '/login') {
       next({ path: '/' })
-      // NProgress.done()
+      NProgress.done()
     } else {
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
@@ -60,11 +58,11 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       next({ path: '/user/login', query: { redirect: to.fullPath }})
-      // NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+      NProgress.done()
     }
   }
 })
 
 router.afterEach(() => {
-  // NProgress.done() // finish progress bar
+  NProgress.done()
 })

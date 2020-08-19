@@ -4,12 +4,11 @@ const webpack = require('webpack')
 
 const path = require('path')
 const resolve = (dir) => path.join(__dirname, dir)
-const config = require('./config')
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 // const IS_DEV = ['development', 'dev'].includes(process.env.NODE_ENV)
 
 module.exports = {
-  publicPath: IS_PROD ? `${config.publicPath}` : '/', // 默认'/'，部署应用包时的基本 URL
+  publicPath: IS_PROD ? process.env.VUE_APP_PUBLIC_PATH : '/', // 默认'/'，部署应用包时的基本 URL
   outputDir: 'dist', // 'dist', 生产环境构建文件的目录
   assetsDir: 'static', // 相对于outputDir的静态资源(js、css、img、fonts)目录
   lintOnSave: true,

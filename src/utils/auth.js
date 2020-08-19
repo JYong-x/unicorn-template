@@ -1,20 +1,24 @@
-import Cookies from 'js-cookie'
+import storage from 'store'
 
-const TokenKey = 'Access-Token'
-const RefreshTokenKey = 'Refresh-Token'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/store/mutation-types'
 
 export function getToken() {
-  return Cookies.get(TokenKey)
+  storage.get(ACCESS_TOKEN)
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+  storage.set(ACCESS_TOKEN, token)
 }
 
 export function setRefreshToken(refreshToken) {
-  return Cookies.set(RefreshTokenKey, refreshToken)
+  storage.set(REFRESH_TOKEN, refreshToken)
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  storage.remove(ACCESS_TOKEN)
+}
+
+export function removeAuth() {
+  storage.remove(ACCESS_TOKEN)
+  storage.remove(REFRESH_TOKEN)
 }

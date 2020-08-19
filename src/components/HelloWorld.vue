@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <a-button type="primary">btn</a-button>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
@@ -121,7 +122,7 @@
 </template>
 
 <script>
-import Cookie from 'js-cookie'
+import storage from 'store'
 export default {
   name: 'HelloWorld',
   props: {
@@ -131,7 +132,8 @@ export default {
     }
   },
   created() {
-    Cookie.set('cookie', 1, { expires: new Date(new Date().getTime() + 1 * 60 * 1000) })
+    console.log(123)
+    storage.set('cookie', 1)
   }
 }
 </script>
