@@ -3,7 +3,7 @@ import storage from 'store'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/store/mutation-types'
 
 export function getToken() {
-  storage.get(ACCESS_TOKEN)
+  return storage.get(ACCESS_TOKEN)
 }
 
 export function setToken(token) {

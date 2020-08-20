@@ -123,6 +123,7 @@
 
 <script>
 import storage from 'store'
+import { config } from '@/config'
 export default {
   name: 'HelloWorld',
   props: {
@@ -132,7 +133,8 @@ export default {
     }
   },
   created() {
-    console.log(123)
+    console.log(storage)
+    console.log(config)
     storage.set('cookie', 1)
   }
 }

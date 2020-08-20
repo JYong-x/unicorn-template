@@ -1,9 +1,9 @@
 import router from './router'
 import store from './store'
 
-import NProgress from 'nprogress' // progress bar
-// import '@/components/NProgress/nprogress.less' // progress bar custom style
-// import notification from 'ant-design-vue/es/notification'
+import { Message } from 'ant-design-vue'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 
 NProgress.configure({ showSpinner: false })
@@ -27,13 +27,12 @@ router.beforeEach((to, from, next) => {
           .then(res => {
             const roles = res.result && res.result.role
             store.dispatch('GenerateRoutes', { roles }).then(() => {
-              // 根据roles权限生成可访问的路由表
+              // 根据权限生成可访问的路由表
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
               if (to.path === redirect) {
-                // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
                 next({ ...to, replace: true })
               } else {
                 // 跳转到目的路由
@@ -41,11 +40,8 @@ router.beforeEach((to, from, next) => {
               }
             })
           })
-          .catch(() => {
-            // notification.error({
-            //   message: '错误',
-            //   description: '请求用户信息失败，请重试'
-            // })
+          .catch((error) => {
+            Message.error(error || '获取用户信息失败')
             store.dispatch('Logout').then(() => {
               next({ path: '/user/login', query: { redirect: to.fullPath }})
             })
