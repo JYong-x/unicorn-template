@@ -127,6 +127,16 @@ module.exports = {
   },
 
   css: {
+    loaderOptions: {
+      less: {
+        modifyVars: {
+          // 'primary-color': '#F5222D',
+          // 'ant-prefix': 'u'
+          'hack': `true; @import "${resolve('./src/styles/antd.less')}";`
+        },
+        javascriptEnabled: true
+      }
+    },
     sourceMap: true
   },
 

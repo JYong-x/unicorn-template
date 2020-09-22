@@ -1,8 +1,9 @@
+import Vue from 'vue'
 import axios from '@/utils/interceptor'
 import { config } from '@/config'
 const qs = require('querystring')
 
-const base = config.baseApi
+const base = config.baseUrl
 
 const get = (url, params = {}, api) => {
   return axios({
@@ -79,7 +80,7 @@ const upload = (url, params, api) => {
   })
 }
 
-export default {
+const request = {
   get,
   post,
   postJson,
@@ -88,3 +89,7 @@ export default {
   download,
   upload
 }
+
+export default request
+
+Vue.prototype.$request = request

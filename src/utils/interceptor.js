@@ -93,7 +93,8 @@ instance.interceptors.response.use(
       return Promise.resolve(response)
     } else {
       if (!window.navigator.onLine) {
-        store.commit('changeNetwork', false)
+        tip('请检查网路设置')
+        // store.commit('changeNetwork', false)
       } else {
         tip('请求失败')
         return Promise.reject(error)

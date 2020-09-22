@@ -1,3 +1,9 @@
+/**
+ * 按需加载，剔除掉了一些不需要的框架组件。
+ * 减少了编译支持库包大小
+ *
+ * 当需要更多组件依赖时，在该文件加入即可
+ */
 import Vue from 'vue'
 import {
   Button,
@@ -12,9 +18,9 @@ import {
   Select,
   Table,
   Tooltip,
-  Message,
+  message,
   Modal,
-  Notification,
+  notification,
   Spin
 } from 'ant-design-vue'
 
@@ -28,9 +34,13 @@ Vue.use(Form)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(Tooltip)
-Vue.use(Message)
+Vue.use(message)
 Vue.use(Modal)
-Vue.use(Notification)
+Vue.use(notification)
 Vue.use(Spin)
 Vue.use(Drawer)
 Vue.use(Select)
+
+Vue.prototype.$confirm = Modal.confirm
+Vue.prototype.$message = message
+Vue.prototype.$notification = notification

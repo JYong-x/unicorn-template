@@ -10,7 +10,7 @@ if (IS_PROD) {
 plugins.push(['import', {
   'libraryName': 'ant-design-vue',
   'libraryDirectory': 'es',
-  'style': 'css'
+  'style': true
 }])
 
 module.exports = {

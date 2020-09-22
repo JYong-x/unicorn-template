@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 
 import '@/plugins/antd'
+import '@/utils/request'
 
 Vue.config.productionTip = false
 

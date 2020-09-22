@@ -5,18 +5,21 @@ const {
   VUE_APP_USER_API: userApi,
   VUE_APP_CLIENT_ID: clientId,
   VUE_APP_PLA_FORM_API: plaFormApi,
+  VUE_APP_USE_CAS: useCas,
   VUE_APP_COMMON_API: commonApi,
-  VUE_APP_ENROLL_API: baseApi
+  VUE_APP_ENROLL_API: baseUrl
 } = process.env
 
 module.exports = {
-  baseApi,
-
+  // 当前系统主要的api基础地址
+  baseUrl,
+  // 其它api基础地址
   commonApi,
 
   userApi,
   authHost,
   plaFormApi,
+  useCas,
   // 请求授权地址
   userAuthorizationUri: `${authHost}/authserver/oauth/authorize`,
   // accessToken请求地址
