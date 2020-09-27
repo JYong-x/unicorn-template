@@ -41,7 +41,7 @@ const user = {
     // },
 
     // 获取用户信息
-    GetInfo({ commit }) {
+    GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const result = response.result
@@ -70,7 +70,7 @@ const user = {
     },
 
     // 登出
-    Logout({ commit, state }) {
+    Logout ({ commit, state }) {
       return new Promise((resolve) => {
         logout(state.token).then(() => {
           resolve()

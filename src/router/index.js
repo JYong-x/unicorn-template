@@ -1,30 +1,63 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import BasicLayout from '@/layouts/BasicLayout'
 
 Vue.use(VueRouter)
 
-const routes = [
+export const crRouters = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
+    name: 'index',
+    redirect: '/home',
+    component: BasicLayout,
+    children: [
+      {
+        path: '/home',
+        name: 'Home',
+        meta: { title: '主页', keepAlive: true, hiddenHeaderContent: true, namespaceCode: 'KR_SRTP' },
+        component: () => import('@/views/Home')
+      }
+    ]
   }
+]
+
+/**
+ * 基础路由
+ * @type { *[] }
+ */
+export const constantRouters = [
+  // {
+  //   path: '/redirect',
+  //   component: BasicLayout,
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: '/redirect/:path(.*)',
+  //       component: () => import('@/components/common/Redirect')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/token-index',
+  //   name: 'login',
+  //   hidden: true,
+  //   component: () => import('@/components/login/Login')
+  // },
+  // {
+  //   path: '/page404',
+  //   name: 'page404',
+  //   component: page404
+  // },
+  // {
+  //   path: '/logout',
+  //   name: 'logout',
+  //   component: logout
+  // }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  base: process.env.BASE_URL
 })
 
 export default router

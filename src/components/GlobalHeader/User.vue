@@ -5,10 +5,19 @@
     @visibleChange="visibleChange"
   >
     <div class="trigger-wrap">
-      <a-avatar class="avatar" icon="user" />
-      <a-icon class="direction-icon" :type="visible ? 'caret-up' : 'caret-down'" />
+      <a-avatar
+        class="avatar"
+        icon="user"
+      ></a-avatar>
+      <a-icon
+        :type="visible ? 'caret-up' : 'caret-down'"
+        class="direction-icon"
+      ></a-icon>
     </div>
-    <div slot="overlay" class="dropdown-container">
+    <div
+      slot="overlay"
+      class="dropdown-container"
+    >
       <div class="content-item info">
         <div>
           <span class="info-item user-name text-b">{{ user.name }}</span>
@@ -16,13 +25,16 @@
         </div>
         <div class="info-item user-department">{{ user.deptName }}</div>
       </div>
-      <div class="content-item btn" @click="logout">注销</div>
+      <div
+        class="content-item btn"
+        @click="logout"
+      >注销</div>
     </div>
   </a-dropdown>
 </template>
 
 <script>
-import config from '@/config'
+// import config from '@/config'
 export default {
   name: 'User',
   props: {
@@ -43,7 +55,7 @@ export default {
     logout () {
       this.visible = false
       this.$store.dispatch('Logout').then(() => {
-        window.location.href = `http://${config.localuri}`
+        // window.location.href = `http://${config.localuri}`
       })
     }
   }

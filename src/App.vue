@@ -1,24 +1,52 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <a-config-provider :locale="zh_CN">
+    <div id="app">
+      <router-view />
     </div>
-    <router-view />
-  </div>
+  </a-config-provider>
 </template>
 
-<style lang="scss">
-#nav {
-  padding: 30px;
+<script>
+import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+moment.locale('zh-cn')
+export default {
+  data () {
+    return {
+      zh_CN
+    }
+  },
+  created () {
+    try {
+      document.body.removeChild(document.getElementById('app-loading'))
+      // setTimeout(function() {
+      //   document.getElementById('app').style.display = 'block'
+      // }, 500)
+    } catch (e) {
+      console.log(e)
     }
   }
 }
+</script>
+
+<style lang="scss">
+  #app {
+    height: 100%;
+    .content-occupy-screen {
+      padding: 16px;
+      background: #fff;
+      margin-bottom: 24px;
+    }
+  }
+  .ant-select-dropdown{
+    .ant-select-dropdown-menu{
+      li{
+        &:first-child{
+          min-height: 32px;
+        }
+      }
+    }
+  }
 </style>

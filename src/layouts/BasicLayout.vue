@@ -8,8 +8,8 @@
     <!-- layout content -->
     <a-layout>
       <side-menu
-        :collapsed="sidebarCollapsed"
         theme="light"
+        :collapsed="collapsed"
         @collapse="onCollapse"
       ></side-menu>
       <a-layout-content :style="{paddingLeft: contentPaddingLeft}">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 import RouteView from './RouteView'
 import GlobalHeader from '@/components/GlobalHeader'
@@ -51,7 +51,8 @@ export default {
     return {
       // mixinMenu 中处理菜单数据
       // systems: {},
-      pageTitle: null
+      pageTitle: null,
+      collapsed: false
     }
   },
   computed: {
@@ -59,10 +60,8 @@ export default {
       // 动态主路由
       user: state => state.user.info
     }),
-    ...mapGetters(['sidebarCollapsed']),
     contentPaddingLeft () {
-      console.log(this.sidebarCollapsed)
-      if (this.sidebarCollapsed) {
+      if (this.collapsed) {
         return '0'
       }
       return '180px'
@@ -87,18 +86,15 @@ export default {
       this.pageTitle = this.$route.meta.title
     },
     onCollapse (collapsed) {
-      this.$store.dispatch('setSidebar', collapsed)
+      this.collapsed = collapsed
+      // this.$store.dispatch('setSidebar', collapsed)
     }
   }
 }
 </script>
-<style lang="scss" rel="stylesheet/scss">
-  @import "assets/styles/style-version-1.0.scss";
-  @include topRightBtn;
-  @include moduleContainer;
-</style>
 <style lang="scss">
 .ant-layout {
+  background: #e6effa !important;
   .layout-header {
     width: 100%;
     height: 60px;

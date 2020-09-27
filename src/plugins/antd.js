@@ -6,6 +6,7 @@
  */
 import Vue from 'vue'
 import {
+  ConfigProvider,
   Button,
   Icon,
   Layout,
@@ -13,6 +14,8 @@ import {
   Menu,
   Pagination,
   Form,
+  Dropdown,
+  Avatar,
   Input,
   Drawer,
   Select,
@@ -24,6 +27,7 @@ import {
   Spin
 } from 'ant-design-vue'
 
+Vue.use(ConfigProvider)
 Vue.use(Button)
 Vue.use(Icon)
 Vue.use(Layout)
@@ -31,6 +35,8 @@ Vue.use(Breadcrumb)
 Vue.use(Menu)
 Vue.use(Pagination)
 Vue.use(Form)
+Vue.use(Dropdown)
+Vue.use(Avatar)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(Tooltip)

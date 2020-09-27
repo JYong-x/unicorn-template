@@ -11,6 +11,7 @@ const {
 } = process.env
 
 module.exports = {
+  systemCode: 'enroll',
   // 当前系统主要的api基础地址
   baseUrl,
   // 其它api基础地址

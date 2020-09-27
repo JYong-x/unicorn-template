@@ -132,7 +132,7 @@ export default {
       default: ''
     }
   },
-  created() {
+  created () {
     console.log(storage)
     console.log(config)
     storage.set('cookie', 1)

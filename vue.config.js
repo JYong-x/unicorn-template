@@ -71,20 +71,35 @@ module.exports = {
 
     // svg
     config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
+    // .rule('svg')
+    // .exclude.add(resolve('src/icons'))
+    // .end()
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
+    svgRule
+      .oneOf('inline')
+      .resourceQuery(/inline/)
+      .use('vue-svg-icon-loader')
+      .loader('vue-svg-icon-loader')
       .end()
-    config.module
-      .rule('icons')
-      .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
       .end()
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
+      .oneOf('external')
+      .use('file-loader')
+      .loader('file-loader')
       .options({
-        symbolId: 'icon-[name]'
+        name: 'assets/[name].[hash:8].[ext]'
       })
-      .end()
+    // config.module
+    //   .rule('icons')
+    //   .test(/\.svg$/)
+    //   .include.add(resolve('src/icons'))
+    //   .end()
+    //   .use('svg-sprite-loader')
+    //   .loader('svg-sprite-loader')
+    //   .options({
+    //     symbolId: 'icon-[name]'
+    //   })
+    //   .end()
 
     // 打包分析
     if (IS_PROD) {

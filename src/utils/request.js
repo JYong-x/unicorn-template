@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from '@/utils/interceptor'
-import { config } from '@/config'
+import config from '@/config'
 const qs = require('querystring')
 
 const base = config.baseUrl

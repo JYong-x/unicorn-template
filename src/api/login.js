@@ -1,11 +1,11 @@
 import axios from '@/utils/interceptor'
-import { config } from '@/config'
+import config from '@/config'
 import { getToken } from '@/utils/auth'
 
 // 模块地址
 // const moduleUrl = '/login'
 
-export function login(code) {
+export function login (code) {
   return axios({
     url: `${config.accessTokenUri}`,
     method: 'post',
@@ -21,7 +21,7 @@ export function login(code) {
       grant_type: config.grant_type
     },
     transformRequest: [
-      function(data) {
+      function (data) {
         let ret = ''
         for (const it in data) {
           if (data[it] === null) {
@@ -34,7 +34,7 @@ export function login(code) {
     ]
   })
 }
-export function getInfo() {
+export function getInfo () {
   const token = getToken()
   return axios({
     url: `${config.userInfoUri}`,
@@ -45,7 +45,7 @@ export function getInfo() {
     }
   })
 }
-export function logout() {
+export function logout () {
   return new Promise(resolve => {
     axios({
       url: `${config.logoutUri}`,
