@@ -1,5 +1,6 @@
 // 用户信息相关模块（登录信息，个人信息等）
-import storage from 'store'
+import Vue from 'vue'
+import config from '@/config'
 import { getInfo, logout } from '@/api/login'
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/store/mutation-types'
@@ -71,18 +72,34 @@ const user = {
 
     // 登出
     Logout ({ commit, state }) {
-      return new Promise((resolve) => {
+      if (config.useCas) {
         logout(state.token).then(() => {
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
-          storage.remove(ACCESS_TOKEN)
-          storage.remove(REFRESH_TOKEN)
+          Vue.storage.remove(ACCESS_TOKEN)
+          Vue.storage.remove(REFRESH_TOKEN)
+          window.location.href = `${config.casLogOutUri}?redirect_uri=${config.redirect_cas_uri}`
         })
-      })
+      } else {
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        Vue.storage.remove(ACCESS_TOKEN)
+        Vue.storage.remove(REFRESH_TOKEN)
+        window.location.href = `${config.authHost}/authserver/logout?access_token=${state.token}&returnTo=http://${config.localuri}`
+      }
+      // return new Promise((resolve) => {
+      //   logout(state.token).then(() => {
+      //     resolve()
+      //   }).catch(() => {
+      //     resolve()
+      //   }).finally(() => {
+      //     commit('SET_TOKEN', '')
+      //     commit('SET_ROLES', [])
+      //     Vue.storage.remove(ACCESS_TOKEN)
+      //     Vue.storage.remove(REFRESH_TOKEN)
+      //     window.location.href = `${config.baseOAuthUrl}/authserver/logout?access_token=${state.token}&returnTo=http://${config.localuri}`
+      //   })
+      // })
     }
 
   }

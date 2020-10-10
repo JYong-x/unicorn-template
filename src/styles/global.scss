@@ -1,0 +1,107 @@
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px; /* 纵向滚动条*/
+  height: 8px; /* 横向滚动条 */
+}
+
+/*定义滚动条轨道*/
+::-webkit-scrollbar-track {
+  background-color: #f3f3f3;
+}
+
+/*定义滑块*/
+::-webkit-scrollbar-thumb {
+  background-color: #cdcdcd;
+  border-radius: 6px;
+}
+
+.u-page-button {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  >div,
+  >a{
+    margin-left: 8px;
+  }
+}
+
+// 隐藏表格行操作的间隔线条
+.table-row-action {
+  .ant-divider {
+    &:first-child {
+      display: none;
+    }
+  }
+}
+
+.mg-l4 {
+  margin-left: 4px;
+}
+.mg-l8 {
+  margin-left: 8px;
+}
+.mg-l12 {
+  margin-left: 12px
+}
+
+.pd-l4 {
+  padding-left: 4px;
+}
+.pd-l8 {
+  padding-left: 8px;
+}
+.pd-l12 {
+  padding-left: 12px
+}
+
+.text-d {
+  color: rgba(0, 0, 0, .85)
+}
+.text-l {
+  color: rgba(0, 0, 0, .45)
+}
+.text-f12 {
+  font-size: 12px;
+}
+.ant-drawer{
+  .ant-drawer-content{
+    position: static;
+  }
+  .drawer-close-wrap{
+    position: absolute;
+    top: 240px;
+    background: #1890ff;
+    width: 48px;
+    height: 48px;
+    left: -48px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 1052;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 4px 0 0 4px;
+    color: #fff;
+  }
+}
+
+// 模块样式
+.module-container-box{
+  border: 1px solid #d9d9d9;
+  padding: 24px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  &:last-child{
+    margin-bottom: 0;
+  }
+  .module-container-title{
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+}
