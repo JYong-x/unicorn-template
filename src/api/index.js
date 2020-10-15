@@ -12,8 +12,5 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   return modules
 }, {})
 // 导出接口
-export const api = {
-  modules
-}
 
-Vue.prototype.$api = api
+Vue.prototype.$api = modules

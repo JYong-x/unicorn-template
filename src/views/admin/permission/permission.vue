@@ -265,8 +265,7 @@ export default {
     getPermissionInfo () {
       this.show = true
       this.namespaceCode = this.$route.meta.namespaceCode
-      const url = `/permManage`
-      this.$http.get(url, { nameSpace: this.namespaceCode }, userBaseHttp).then(resp => {
+      this.$api.admin.permissionList({ nameSpace: this.namespaceCode }).then(resp => {
         if (resp && resp.status === 200) {
           // Dialog数据
           this.curPermTWrapper = resp.data.curPermTWrapper
@@ -373,8 +372,7 @@ export default {
     // 删除
     delPermissionList (record, index, item, num, it, i) {
       this.spinning = true
-      const url = `/permManage-del/` + record.authorityVOList[num].permissionsDetails[i].id
-      this.$http.post(url, {}, userBaseHttp).then(resp => {
+      this.$api.admin.deletePermission(record.authorityVOList[num].permissionsDetails[i].id).then(resp => {
         if (resp && resp.status === 200) {
           this.permWrapperGroupByTypes[index].authorityVOList[num].permissionsDetails.splice(i, 1)
           this.permWrapperGroupByTypes[index].authorityVOList[num].permissionsDetails = [...this.permWrapperGroupByTypes[index].authorityVOList[num].permissionsDetails]
@@ -406,11 +404,10 @@ export default {
     linkFunctionModuleName () {
       if (this.clickFunction) {
         const functionModule = ' '
-        const url = `/permManage/functionModule`
-        this.$http.get(url, {
+        this.$api.admin.functionModuleName({
           nameSpace: this.namespaceCode,
           moduleName: functionModule
-        }, userBaseHttp).then(resp => {
+        }).then(resp => {
           if (resp && resp.status === 200) {
             this.functionModuleNameList = resp.data.data
             this.functionModuleList = true
@@ -424,13 +421,12 @@ export default {
       this.$nextTick(() => {
         const functionModule = this.form.getFieldValue('functionModule')
         if (functionModule) {
-          const url = `/permManage/functionModule`
           if (this.lastTime === 0) {
             this.lastTime = setTimeout(() => {
-              this.$http.get(url, {
+              this.$api.admin.functionModuleName({
                 nameSpace: this.namespaceCode,
-                moduleName: functionModule
-              }, userBaseHttp).then(resp => {
+                moduleName: functionModule }
+              ).then(resp => {
                 if (resp && resp.status === 200) {
                   this.functionModuleNameList = resp.data.data
                 }
@@ -440,7 +436,7 @@ export default {
           } else {
             clearTimeout(this.lastTime)
             this.lastTime = setTimeout(() => {
-              this.$http.get(url, {}, userBaseHttp).then(resp => {
+              this.$api.admin.functionModuleName().then(resp => {
                 if (resp && resp.status === 200) {
                   this.functionModuleNameList = resp.data.data
                 }
@@ -562,7 +558,7 @@ export default {
               _this.setPermVOList(_this.originalList)
             })
           } else {
-            this.$http.post(`/permManage`, _this.curPermTWrapper, userBaseHttp).then((resp) => {
+            this.$api.admin.savePermission(_this.curPermTWrapper).then((resp) => {
               if (resp && resp.status === 200) {
                 let index = 0
                 let lineIndex = 0

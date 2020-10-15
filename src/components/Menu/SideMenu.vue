@@ -224,7 +224,7 @@ export default {
   .menu-icon {
     margin-right: 6px;
   }
-  .side-menu-fixed {
-    position: fixed;
-  }
+.side-menu-fixed {
+  position: fixed;
+}
 </style>

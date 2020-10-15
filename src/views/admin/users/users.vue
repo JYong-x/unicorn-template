@@ -346,9 +346,6 @@
 import { transitionAutoHeight } from '@/utils/util'
 import ExportTable from '@/components/base/ExportTable'
 
-import config from '@/config'
-const { userApi: userBaseHttp, resourceApi: resourceBaseHttp, commonApi: commonApiBaseHttp } = config
-
 const columns = [
   {
     title: '学院',
@@ -539,7 +536,7 @@ export default {
         defaultPageSize: 10,
         showTotal: total => `共 ${total} 条数据`,
         showSizeChanger: true,
-        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize // eslint-disable-line
       }
     }
   },
@@ -562,9 +559,7 @@ export default {
       this.instInfoWrapperFilterObj.currentPage = this.pagination.current
       this.instInfoWrapperFilterObj.pageSize = this.pagination.pageSize
       this.instInfoWrapperFilterObj.nameSpace = this.$route.meta.namespaceCode
-      const url = '/userManage/page/filter'
-      console.log(commonApiBaseHttp)
-      this.$http.get(url, this.instInfoWrapperFilterObj, commonApiBaseHttp).then(resp => {
+      this.$api.admin.userList(this.instInfoWrapperFilterObj).then(resp => {
         // 表格数据
         this.instructorInfoWrappers = resp.data.data.instructorInfoWrapperList
         // // 学院Finder
@@ -592,8 +587,7 @@ export default {
       })
     },
     getDepartmentFinder () {
-      const deptUrl = `/department/list`
-      this.$http.get(deptUrl, {}, resourceBaseHttp).then((res) => {
+      this.$api.finder.departmentFinder().then((res) => {
         if (res && res.status === 200) {
           this.departmentFinder = res.data
           this.finders.departmentFinder = res.data
@@ -617,8 +611,7 @@ export default {
     },
     // 批量添加教师
     addTeacher () {
-      const url = `/userManage/instructor/like`
-      this.$http.get(url, { value: this.nameOrCode }, commonApiBaseHttp).then((resp) => {
+      this.$api.admin.addInstructor({ value: this.nameOrCode }).then((resp) => {
         if (resp && resp.status === 200) {
           if (resp.data.data && resp.data.data.length > 1) {
             this.teacherFinder = resp.data.data
@@ -665,13 +658,12 @@ export default {
     submitBatch () {
       this.spinning = true
       this.userManageVO.instructorIdList = []
-      const url = `/userManage/batch/role`
       this.roleInstructorInfoList.forEach((item) => {
         this.userManageVO.instructorIdList.push(item.id)
       })
       this.userManageVO.instructorInfoWrapperList = this.roleInstructorInfoList
       this.userManageVO.nameSpace = this.$route.meta.namespaceCode
-      this.$http.postJson(url, this.userManageVO, commonApiBaseHttp).then((resp) => {
+      this.$api.admin.batchSaveUsers(this.userManageVO).then((resp) => {
         if (resp && resp.status === 200) {
           this.batchRoleDialog = false
           const listName = []
@@ -728,8 +720,7 @@ export default {
       this.instInfoWrapperFilterObj.pageSize = this.pagination.pageSize
       this.instInfoWrapperFilterObj.currentPage = this.pagination.current
       this.instInfoWrapperFilterObj.nameSpace = this.$route.meta.namespaceCode
-      const url = '/userManage/page/filter'
-      this.$http.get(url, this.instInfoWrapperFilterObj, commonApiBaseHttp).then((resp) => {
+      this.$api.admin.userList(this.instInfoWrapperFilterObj).then((resp) => {
         if (resp && resp.status === 200) {
           // 更新表格数据
           this.instructorInfoWrappers = resp.data.data.instructorInfoWrapperList
@@ -801,7 +792,7 @@ export default {
           // 把form中的值 设置到wapper中
           this.spinning = true
           Object.assign(this.toBeAddInstInfoWrapper, values)
-          this.$http.post('/userManage/user', this.toBeAddInstInfoWrapper, userBaseHttp).then((resp) => {
+          this.$api.admin.saveUser(this.toBeAddInstInfoWrapper).then((resp) => {
             if (resp && resp.status === 200) {
               const data = resp.data.data
               const i = this.instructorInfoWrappers.findIndex(ele => ele.id === data.id)

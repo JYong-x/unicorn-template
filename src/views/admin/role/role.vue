@@ -227,9 +227,6 @@
 <script>
 import deepClone from 'lodash.clonedeep'
 import noTrapezoidImg from './noTrapezoidImg'
-import config from '@/config'
-
-const userBaseHttp = config.userApi
 
 const columns = [
   {
@@ -311,7 +308,7 @@ export default {
     getRoleInfo () {
       this.show = true
       this.namespaceCode = this.$route.meta.namespaceCode
-      this.$http.get('/role', { nameSpace: this.namespaceCode }, userBaseHttp).then(resp => {
+      this.$api.admin.roleList({ nameSpace: this.namespaceCode }).then(resp => {
         if (resp && resp.status === 200) {
           // 表格数据
           this.krim_role_t_dtos = resp.data.krim_role_t_dtos || []
@@ -390,8 +387,7 @@ export default {
     },
     getPermissionInfo (item) {
       this.spinningPermission = true
-      const url = `/role/update`
-      this.$http.get(url, { nameSpace: this.namespaceCode, id: item.encryptId }, userBaseHttp).then(resp => {
+      this.$api.admin.rolePermissions({ nameSpace: this.namespaceCode, id: item.encryptId }).then(resp => {
         // 表格数据
         this.permWrapperGroupByTypes = resp.data.permTWrappers
         for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
@@ -427,8 +423,7 @@ export default {
     },
     getAddPermissionInfo () {
       this.spinningPermission = true
-      const url = `/perm/list`
-      this.$http.get(url, { nameSpace: this.namespaceCode }, userBaseHttp).then(resp => {
+      this.$api.admin.roleAddPermissions({ nameSpace: this.namespaceCode }).then(resp => {
         if (resp && resp.status === 200) {
           this.addRole = true
           this.permWrapperGroupByTypes = resp.data.data
@@ -578,8 +573,7 @@ export default {
           } else {
             this.curRole.permissionIdList = this.defaultHookListId
           }
-          const url = '/role/' + this.namespaceCode
-          this.$http.postJson(url, this.curRole, userBaseHttp).then((resp) => {
+          this.$api.admin.saveRole().then((resp) => {
             if (resp && resp.status === 200) {
               if (resp.data.code === 'validateFailure') {
                 this.$message.error(resp.data.msg)

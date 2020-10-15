@@ -1,3 +1,4 @@
+<!--eslint-disable-->
 <template>
   <div class="container-all">
     <div class="container-user">
@@ -142,32 +143,33 @@
                 <div class="functionModuleName">
                   {{ record.functionModuleName }}
                 </div>
-                <div
-                  v-for="(item,num) of record.authorityVOList"
-                  :key="num"
-                >
-                  <div
-                    v-show="item.permissionsDetails.length>0"
-                    class="perm-detail-title"
-                  >
-                    {{ item.title }}
-                  </div>
-                  <div class="perm-detail-content">
-                    <div
-                      v-for="(it,i) of item.permissionsDetails"
-                      :key="i"
-                    >
-                      <a-popover>
-                        <template slot="content">
-                          <span>{{ it.description }}</span>
-                        </template>
-                        <span
-                          class="perm-detail-name"
-                        >{{ it.description }}</span>
-                      </a-popover>
-                    </div>
-                  </div>
-                </div>
+                <!--                <template v-for="(item,num) of record.authorityVOList">-->
+                <!--                  <div-->
+                <!--                    :key="num"-->
+                <!--                  >-->
+                <!--                    <div-->
+                <!--                      v-show="item.permissionsDetails.length>0"-->
+                <!--                      class="perm-detail-title"-->
+                <!--                    >-->
+                <!--                      {{ item.title }}-->
+                <!--                    </div>-->
+                <!--                    <div class="perm-detail-content">-->
+                <!--                      <div-->
+                <!--                        v-for="(it,i) of item.permissionsDetails"-->
+                <!--                        :key="i"-->
+                <!--                      >-->
+                <!--                        <a-popover>-->
+                <!--                          <template slot="content">-->
+                <!--                            <span>{{ it.description }}</span>-->
+                <!--                          </template>-->
+                <!--                          <span-->
+                <!--                            class="perm-detail-name"-->
+                <!--                          >{{ it.description }}</span>-->
+                <!--                        </a-popover>-->
+                <!--                      </div>-->
+                <!--                    </div>-->
+                <!--                  </div>-->
+                <!--                </template>-->
               </div>
             </a-spin>
           </div>
@@ -216,8 +218,6 @@
 
 <script>
 import { deepClone } from '@/utils/util'
-import config from '@/config'
-const { userApi: userBaseHttp, commonApi: commonApiBaseHttp } = config
 
 const columnsUser = [
   {
@@ -297,9 +297,8 @@ export default {
       this.showPerm = true
       this.namespaceCode = this.$route.meta.namespaceCode
       this.instructorId = this.$route.query.id
-      const url = '/userManage/user/' + this.instructorId
       const userId = this.$store.state.user.info.code
-      this.$http.get(url, { nameSpace: this.namespaceCode, userId: userId }, userBaseHttp).then(resp => {
+      this.$api.admin.userInfo(this.instructorId, { nameSpace: this.namespaceCode, userId: userId }).then(resp => {
         if (resp && resp.status === 200) {
           // 角色表格数据
           this.krimRoleTDTOs = resp.data.krimRoleTDTOs
@@ -322,8 +321,7 @@ export default {
     },
     // 管理部门finder
     getDetpartmentFinder () {
-      const url = `/optionFinder/userManage/department?nameSpace=${this.$route.meta.namespaceCode}&userId=${this.selectedInstInfoWrapper.id}`
-      this.$http.get(url, {}, commonApiBaseHttp).then(resp => {
+      this.$api.admin.mangeDepartment({ nameSpace: this.$route.meta.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(resp => {
         if (resp && resp.status === 200) {
           this.departmentFinder = resp.data.data
         }
@@ -414,8 +412,7 @@ export default {
           Object.assign(this.userManageDeptWrapper, values)
           this.userManageDeptWrapper.nameSpace = this.namespaceCode
           this.userManageDeptWrapper.userId = this.instructorId
-          const url = '/userManage/user/dept'
-          this.$http.post(url, this.userManageDeptWrapper, userBaseHttp).then((resp) => {
+          this.$api.admin.addManageDepartment(this.userManageDeptWrapper).then((resp) => {
             if (resp && resp.status === 200) {
               this.userManageDeptWrapperList.push(resp.data.data)
               this.$message.success('编辑成功')
@@ -426,8 +423,7 @@ export default {
     },
     //    删除上课教师标签
     delTag (item, index) {
-      const url = '/userManage/user/dept-del/' + item.id
-      this.$http.post(url, {}, userBaseHttp).then((resp) => {
+      this.$api.admin.deleteDepartment(item.id).then((resp) => {
         this.userManageDeptWrapperList.splice(index, 1)
         this.userManageDeptWrapperList = [...this.userManageDeptWrapperList]
       })
@@ -435,12 +431,11 @@ export default {
     //    保存可分配角色
     saveAssignablePerms () {
       this.spinning = true
-      const url = `/userManage/batch/role?userId=${this.selectedInstInfoWrapper.id}`
       this.userManageVO.nameSpace = this.namespaceCode
       this.userManageVO.instructorId = this.selectedInstInfoWrapper.id
       this.userManageVO.roleIdList = []
       this.userManageVO.roleIdList = this.selectedKeys
-      this.$http.postJson(url, this.userManageVO, userBaseHttp).then((resp) => {
+      this.$api.admin.saveAssignablePerms(this.selectedInstInfoWrapper.id, this.userManageVO).then((resp) => {
         if (resp && resp.status === 200) {
           this.refresh()
           this.$message.success('保存成功')
@@ -451,8 +446,7 @@ export default {
       }, 500)
     },
     refresh () {
-      const url = `/userManage/user-nameSpace/permission`
-      this.$http.get(url, { nameSpace: this.namespaceCode, userId: this.selectedInstInfoWrapper.id }, userBaseHttp).then(resp => {
+      this.$api.admin.refresh({ nameSpace: this.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(resp => {
         if (resp && resp.status === 200) {
           // 权限数据
           this.permWrapperGroupByTypes = resp.data.data
