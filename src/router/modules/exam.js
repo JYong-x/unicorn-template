@@ -1,7 +1,8 @@
+import config from '@/config'
 /**
  * 四六级
  */
-const examUrl = 'http://my.cqu.edu.cn/tams/portal'
+const examUrl = config.httpRoot + '/tams/portal'
 const examRouterMap = [
   {
     path: '',

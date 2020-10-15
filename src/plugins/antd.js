@@ -21,10 +21,14 @@ import {
   Select,
   Table,
   Tooltip,
+  Popover,
   message,
   Modal,
   notification,
-  Spin
+  Spin,
+  Skeleton,
+  Checkbox,
+  Tag
 } from 'ant-design-vue'
 
 Vue.use(ConfigProvider)
@@ -40,12 +44,16 @@ Vue.use(Avatar)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(Tooltip)
+Vue.use(Popover)
 Vue.use(message)
 Vue.use(Modal)
 Vue.use(notification)
 Vue.use(Spin)
 Vue.use(Drawer)
 Vue.use(Select)
+Vue.use(Skeleton)
+Vue.use(Checkbox)
+Vue.use(Tag)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

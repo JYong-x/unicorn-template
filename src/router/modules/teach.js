@@ -1,5 +1,7 @@
-const teachEvaUrl = ''
-const testUrl = ''
+import config from '@/config'
+
+const teachEvaUrl = config.httpRoot + '/teach/portal'
+const testUrl = config.httpRoot + '/test/portal'
 const teachEvaRouterMap = [
   {
     path: teachEvaUrl,

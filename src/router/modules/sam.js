@@ -1,8 +1,9 @@
+import config from '@/config'
 /**
  * 成绩权限路由
  * @type { *[] }
  */
-const resultUrl = 'http://my.cqu.edu.cn/sam/portal'
+const resultUrl = config.httpRoot + '/sam'
 const resultRouterMap = [
   {
     path: resultUrl + '/Home',

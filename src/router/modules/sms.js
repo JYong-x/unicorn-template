@@ -1,7 +1,8 @@
+import config from '@/config'
 /**
  * 学籍路由
  */
-const smsUrl = 'http://my.cqu.edu.cn/sms/portal'
+const smsUrl = config.httpRoot + '/sms/portal'
 const smsRouterMap = [
   {
     path: smsUrl + '/home?methodToCall=getHomePage&amp;viewId=PortalView',

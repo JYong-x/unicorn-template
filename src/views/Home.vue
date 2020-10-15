@@ -2,6 +2,7 @@
   <div class="home">
     <u-icon type="icon-biaoge"></u-icon>
     <a-icon type="user"></a-icon>
+    <u-empty></u-empty>
     <!--    <a-icon :component="test"></a-icon>-->
   </div>
 </template>

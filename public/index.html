@@ -1,17 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="./static/favicon.ico">
+  <title>系统名称 - 重庆大学</title>
+</head>
+<style>
+  #app-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ecf0f5;
+    z-index: 9999;
+  }
+  #app-loading .spin-spinning {
+    display: inline-block;
+    opacity: 1;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: rgba(0, 0, 0, .65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    font-feature-settings: "tnum";
+    color: #1890ff;
+  }
+  #app-loading .spin-dot {
+    font-size: 32px;
+    transform: rotate(45deg);
+    -webkit-animation: rotate 1.2s linear infinite;
+    animation: rotate 1.2s linear infinite;
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+  }
+  @keyframes rotate {
+    100% {
+      transform: rotate(405deg);
+    }
+  }
+  @keyframes spinMove {
+    100% {
+      opacity: 1;
+    }
+
+  }
+  #app-loading .spin-dot-item {
+    width: 14px;
+    height: 14px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    display: block;
+    background-color: #1890ff;
+    border-radius: 100%;
+    transform: scale(.75);
+    transform-origin: 50% 50%;
+    opacity: .3;
+    -webkit-animation: spinMove 1s linear infinite alternate;
+    animation: spinMove 1s linear infinite alternate;
+  }
+  #app-loading .spin-dot-item:first-child {
+    top: 0;
+    left: 0;
+  }
+  #app-loading .spin-dot-item:nth-child(2) {
+    top: 0;
+    left: 16px;
+    -webkit-animation-delay: .4s;
+    animation-delay: .4s;
+  }
+  #app-loading .spin-dot-item:nth-child(3) {
+    right: 0;
+    top: 16px;
+    -webkit-animation-delay: .8s;
+    animation-delay: .8s;
+  }
+  #app-loading .spin-dot-item:nth-child(4) {
+    top: 16px;
+    left: 16px;
+    -webkit-animation-delay: 1.2s;
+    animation-delay: 1.2s;
+  }
+</style>
+<body>
+<noscript>
+  <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+</noscript>
+<div id="app-loading">
+  <div class="spin spin-lg spin-spinning"><span class="spin-dot spin-dot-spin"><i class="spin-dot-item"></i><i class="spin-dot-item"></i><i class="spin-dot-item"></i><i class="spin-dot-item"></i></span></div>
+</div>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
 </html>

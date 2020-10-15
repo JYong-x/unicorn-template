@@ -1,7 +1,8 @@
+import config from '@/config'
 /**
  * 创新创业
  */
-const srtpUrl = 'http://my.cqu.edu.cn/srtp/portal'
+const srtpUrl = config.httpRoot + '/srtp/portal'
 const srtpRouterMap = [
   {
     path: srtpUrl + '/project?methodToCall=getCommonHome&amp;viewId=ProjectView',

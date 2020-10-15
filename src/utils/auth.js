@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { login } from '@/api/login'
+import login from '@/api/login'
 import { message } from 'ant-design-vue'
 import router from '../router'
 import { ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_EXPIRE_TIME, TOKEN } from '@/store/mutation-types'

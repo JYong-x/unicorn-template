@@ -1,7 +1,8 @@
+import config from '@/config'
 /**
  * 教师教学档案
  */
-const tpmsUrl = 'http://my.cqu.edu.cn/tpms/portal'
+const tpmsUrl = config.httpRoot + '/tpms/portal'
 const tpmsRouterMap = [
   {
     path: tpmsUrl + '/home?methodToCall=getTPMSHomePage&viewId=PortalView',

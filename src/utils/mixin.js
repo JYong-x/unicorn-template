@@ -7,7 +7,7 @@ import config from '@/config'
 const mixinMenu = {
   data () {
     return {
-      oldMenu: ['cm', 'sms', 'timetable', 'exam', 'tpms', 'tams', 'srtp', 'trpms'],
+      oldMenu: ['cm', 'sms', 'timetable', 'tpms', 'tams', 'srtp', 'trpms'],
       selfSystemCode: config.systemCode,
       menus: [],
       systemList: [],

@@ -3,7 +3,7 @@ import axios from '@/utils/interceptor'
 import config from '@/config'
 const qs = require('querystring')
 
-const base = config.baseUrl
+const base = config.baseApi
 
 const get = (url, params = {}, api) => {
   return axios({
@@ -69,13 +69,49 @@ const download = (url, params = {}, api) => {
   })
 }
 
-const upload = (url, params, api) => {
+const downloadGet = (url, params = {}, api) => {
+  return axios({
+    method: 'get',
+    data: params,
+    url: `${api || base}${url}`,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    responseType: 'arraybuffer'
+  })
+}
+
+const upload = (url, params, config) => {
+  return axios({
+    method: 'post',
+    data: params,
+    url: `${config.baseUrl || base}${url}`,
+    onUploadProgress: config.onUploadProgress,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+const uploadPut = (url, params, config) => {
+  return axios({
+    method: 'put',
+    data: params,
+    url: `${config.baseUrl || base}${url}`,
+    onUploadProgress: config.onUploadProgress,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+const uploadJson = (url, params, api) => {
   return axios({
     method: 'post',
     data: params,
     url: `${api || base}${url}`,
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'application/json'
     }
   })
 }
@@ -87,9 +123,12 @@ const request = {
   put,
   putJson,
   download,
-  upload
+  downloadGet,
+  upload,
+  uploadPut,
+  uploadJson
 }
 
 export default request
 
-Vue.prototype.$request = request
+Vue.prototype.$http = request

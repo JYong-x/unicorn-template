@@ -26,7 +26,7 @@
               @click="handleSystemClick(system.code)"
             >
               <div class="item-content">
-                <div class="menu-icon iconfont"></div>
+                <u-icon class="menu-icon" :type="system.icon"></u-icon>
                 <div class="menu-text">
                   {{ system.name }}
                 </div>
@@ -57,10 +57,10 @@
                     :key="route.path"
                   >
                     <span slot="title">
-                      <i
-                        class="fa menu-icon"
-                        :class="route.meta.icon || route.iconCls || route.meta.iconCls"
-                      ></i>
+                      <u-icon
+                        class="menu-icon"
+                        :type="route.meta.icon || route.iconCls || route.meta.iconCls"
+                      ></u-icon>
                       <span>{{ route.meta.title || route.meta.pageTitle }}</span>
                     </span>
                     <template v-for="r of route.children">
@@ -90,10 +90,10 @@
                       v-if="!route.meta.target"
                       :to="route.path"
                     >
-                      <i
-                        class="fa menu-icon"
-                        :class="route.meta.icon || route.iconCls || route.meta.iconCls"
-                      ></i>
+                      <u-icon
+                        class="menu-icon"
+                        :type="route.meta.icon || route.iconCls || route.meta.iconCls"
+                      ></u-icon>
                       <span>{{ route.meta.title || route.meta.pageTitle }}</span>
                     </router-link>
                     <a
@@ -177,7 +177,7 @@ export default {
 
 <style lang="scss">
   .ant-menu-inline {
-    border-color: transparent;
+    border-color: transparent !important;
   }
   .menu-list-container {
     display: flex;
@@ -259,7 +259,7 @@ export default {
       width: 100%;
       height: 100%;
       .menu-icon {
-        font-size: 24px;
+        font-size: 16px;
       }
       .menu-text {
         padding-left: 4px;

@@ -4,7 +4,7 @@ const webpack = require('webpack')
 
 const path = require('path')
 const resolve = (dir) => path.join(__dirname, dir)
-const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
+const IS_PROD = ['production', 'prod', 'isse', 'test'].includes(process.env.NODE_ENV)
 // const IS_DEV = ['development', 'dev'].includes(process.env.NODE_ENV)
 
 module.exports = {
@@ -71,35 +71,35 @@ module.exports = {
 
     // svg
     config.module
-    // .rule('svg')
-    // .exclude.add(resolve('src/icons'))
-    // .end()
-    const svgRule = config.module.rule('svg')
-    svgRule.uses.clear()
-    svgRule
-      .oneOf('inline')
-      .resourceQuery(/inline/)
-      .use('vue-svg-icon-loader')
-      .loader('vue-svg-icon-loader')
+      .rule('svg')
+      .exclude.add(resolve('src/icons'))
       .end()
-      .end()
-      .oneOf('external')
-      .use('file-loader')
-      .loader('file-loader')
-      .options({
-        name: 'assets/[name].[hash:8].[ext]'
-      })
-    // config.module
-    //   .rule('icons')
-    //   .test(/\.svg$/)
-    //   .include.add(resolve('src/icons'))
+    // const svgRule = config.module.rule('svg')
+    // svgRule.uses.clear()
+    // svgRule
+    //   .oneOf('inline')
+    //   .resourceQuery(/inline/)
+    //   .use('vue-svg-icon-loader')
+    //   .loader('vue-svg-icon-loader')
     //   .end()
-    //   .use('svg-sprite-loader')
-    //   .loader('svg-sprite-loader')
+    //   .end()
+    //   .oneOf('external')
+    //   .use('file-loader')
+    //   .loader('file-loader')
     //   .options({
-    //     symbolId: 'icon-[name]'
+    //     name: 'assets/[name].[hash:8].[ext]'
     //   })
-    //   .end()
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+      .end()
 
     // 打包分析
     if (IS_PROD) {
@@ -162,8 +162,7 @@ module.exports = {
       errors: true
     },
     open: true, // 是否自动打开浏览器
-    host: 'localhost',
-    port: '8086', // 代理端口
+    port: '8091', // 代理端口
     https: false,
     hotOnly: true, // 热更新
     proxy: {
@@ -175,21 +174,21 @@ module.exports = {
         pathRewrite: {
           '^/api': '/'
         }
+      },
+      '/auth': {
+        target: 'http://10.254.9.31:8888',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/auth': '/'
+        }
+      },
+      '/isse-auth': {
+        target: 'https://10.254.9.31:8888',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/isse-auth': '/'
+        }
       }
-      // '/auth': {
-      //   target: 'http://10.254.9.31:8888',
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/auth': '/'
-      //   }
-      // },
-      // '/isse-auth': {
-      //   target: 'https://10.254.9.31:8888',
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/isse-auth': '/'
-      //   }
-      // }
     }
   }
 }

@@ -1,14 +1,14 @@
 import router from './router'
 import store from './store'
 
-import { Message } from 'ant-design-vue'
+// import { Message } from 'ant-design-vue'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['home', 'login', 'register', 'registerResult']
+const whiteList = ['login', 'tokenIndex', 'cas']
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
@@ -25,8 +25,8 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetInfo')
           .then(res => {
-            const roles = res.result && res.result.role
-            store.dispatch('GenerateRoutes', { roles }).then(() => {
+            // const roles = res.result && res.result.role
+            store.dispatch('GenerateRoutes', res).then(() => {
               // 根据权限生成可访问的路由表
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
@@ -40,12 +40,12 @@ router.beforeEach((to, from, next) => {
               }
             })
           })
-          .catch((error) => {
-            Message.error(error || '获取用户信息失败')
-            store.dispatch('Logout').then(() => {
-              next({ path: '/user/login', query: { redirect: to.fullPath }})
-            })
-          })
+        // .catch((error) => {
+        //   Message.error(error || '获取用户信息失败')
+        //   store.dispatch('Logout').then(() => {
+        //     next({ path: '/user/login', query: { redirect: to.fullPath }})
+        //   })
+        // })
       }
     }
   } else {
@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
       // 在免登录白名单，直接进入
       next()
     } else {
-      next({ path: '/login', query: { redirect: to.fullPath }})
+      next({ name: 'login', query: { redirect: to.fullPath }})
       NProgress.done()
     }
   }

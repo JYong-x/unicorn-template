@@ -1,7 +1,8 @@
+import config from '@/config'
 /**
  * 课程
  */
-const cmUrl = 'http://my.cqu.edu.cn/cm/portal'
+const cmUrl = config.devUrl
 const cmRouterMap = [
   {
     path: cmUrl + '/home?methodToCall=getHomePage&amp;viewId=PortalView',

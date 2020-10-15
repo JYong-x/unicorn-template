@@ -1,7 +1,8 @@
+import config from '@/config'
 /**
  * 教改管理系统路由
  */
-const trpmsUrl = 'http://my.cqu.edu.cn/trpms/portal'
+const trpmsUrl = config.httpRoot + '/trpms/portal'
 
 export const trpmsRouterMap = [
   {

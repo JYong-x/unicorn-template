@@ -1,4 +1,6 @@
-const testUrl = ''
+import config from '@/config'
+
+const testUrl = config.httpRoot + '/test/portal'
 const testRouterMap = [
   {
     path: testUrl,

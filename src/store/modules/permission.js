@@ -1,5 +1,5 @@
-import { crRouters, constantRouters } from '@/router/index'
-import { cm, sms, timetable, sam, exam, tpms, tams, srtp, trpms } from '@/router/modules'
+import { examRouters, constantRouters } from '@/router/index'
+import { cm, sms, timetable, sam, tpms, tams, srtp, trpms } from '@/router/modules'
 
 import config from '@/config'
 // import { cmRouterMap } from '@/router/modules/cm'
@@ -10,13 +10,13 @@ const systemList = [
   sms,
   timetable,
   {
-    name: '选课管理',
+    name: '排考管理',
     code: config.systemCode,
     icon: '',
-    originRouters: crRouters
+    originRouters: examRouters
   },
   sam,
-  exam,
+  // exam,
   tpms,
   tams,
   srtp,
@@ -53,6 +53,9 @@ function filterAsyncRouter (routerMap, permissions) {
     if (hasPermission(permissions, route)) {
       if (route.children && route.children.length) {
         route.children = filterAsyncRouter(route.children, permissions)
+        if (!route.children.length) {
+          return false
+        }
       }
       return true
     }

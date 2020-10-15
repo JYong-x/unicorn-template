@@ -1,8 +1,9 @@
+import config from '@/config'
 /**
  * 排课权限路由
  * @type { *[] }
  */
-const timeUrl = 'http://my.cqu.edu.cn/timetable/portal'
+const timeUrl = config.httpRoot + `/${process.env === 'production' ? 'tt' : 'timetable'}`
 const timeTableRouterMap = [
   {
     path: timeUrl + '/Home',
@@ -35,7 +36,7 @@ const timeTableRouterMap = [
       matched: [{ path: '', name: '' }]
     }
   }, {
-    path: timeUrl + '',
+    path: timeUrl + '/admin',
     name: 'timeTableManageConsolo',
     coordinateX: 4,
     coordinateY: 1,
@@ -239,7 +240,7 @@ const timeTableRouterMap = [
       matched: [{ path: '/CourseClassSettingInfo', name: '排课设置' }, { path: '', name: '排课控制' }]
     }
   }, {
-    path: timeUrl + '',
+    path: timeUrl + '/searchCount',
     name: 'StartPlanTitle',
     coordinateX: 3,
     coordinateY: 1,
@@ -253,7 +254,7 @@ const timeTableRouterMap = [
       pageTitle: '查询统计'
     }
   }, {
-    path: timeUrl + '',
+    path: timeUrl + '/dataImport',
     name: 'StartPlanTitle',
     coordinateX: 3,
     coordinateY: 7,
@@ -268,7 +269,7 @@ const timeTableRouterMap = [
     }
   },
   {
-    path: timeUrl + '',
+    path: timeUrl + '/teachingTask',
     name: 'TeachingaskTitle',
     coordinateX: 0,
     coordinateY: 0,
@@ -283,7 +284,7 @@ const timeTableRouterMap = [
     }
   },
   {
-    path: timeUrl + '',
+    path: timeUrl + '/course/arrange',
     name: 'CourseArrangementTitle',
     coordinateX: 1,
     coordinateY: 10,
@@ -378,7 +379,7 @@ const timeTableRouterMap = [
     }
   },
   {
-    path: timeUrl + '',
+    path: timeUrl + '/adjustCourse',
     name: '',
     coordinateX: 2,
     coordinateY: 5,
@@ -475,7 +476,7 @@ const timeTableRouterMap = [
     }
   },
   {
-    path: timeUrl + '',
+    path: timeUrl + '/applicationTemporary',
     name: '',
     coordinateX: 2,
     coordinateY: 11,
@@ -525,7 +526,7 @@ const timeTableRouterMap = [
     }
   },
   {
-    path: timeUrl + '',
+    path: timeUrl + '/fullTimeTeacher',
     name: '',
     coordinateX: 2,
     coordinateY: 14,

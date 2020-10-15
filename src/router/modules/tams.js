@@ -1,8 +1,9 @@
+import config from '@/config'
 /**
  * 助教
  */
-const tamsUrl = 'http://my.cqu.edu.cn/tams/portal'
-const tpmsUrl = 'http://my.cqu.edu.cn/tpms/portal'
+const tamsUrl = config.httpRoot + '/tams/portal'
+const tpmsUrl = config.httpRoot + '/tpms/portal'
 const tamsRouterMap = [
   {
     path: tamsUrl + '/home?methodToCall=getCommonHome&amp;viewId=PortalView',
