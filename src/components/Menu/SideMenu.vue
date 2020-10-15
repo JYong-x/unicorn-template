@@ -5,7 +5,7 @@
     :collapsed-width="0"
     :theme="theme"
     :collapsible="true"
-    breakpoint="lg"
+    breakpoint="xxl"
     :width="180"
     :trigger="null"
     class="layout-side side-menu-fixed"
