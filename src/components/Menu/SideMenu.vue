@@ -1,16 +1,18 @@
 <template>
   <a-layout-sider
+    v-model="collapsed"
+    :default-collapsed="defaultCollapsed"
     :collapsed-width="0"
     :theme="theme"
     :collapsible="true"
-    :collapsed="stateCollapsed"
+    breakpoint="lg"
     :width="180"
     :trigger="null"
     class="layout-side side-menu-fixed"
   >
     <span
       class="trigger"
-      @click="onCollapse(!collapsed)"
+      @click="() => collapsed = !collapsed"
     >
       <a-icon :type="collapsed ? 'right' : 'left'"></a-icon>
     </span>
@@ -90,33 +92,23 @@ export default {
   },
   mixins: [mixinMenu],
   props: {
-    collapsed: {
-      type: Boolean,
-      default: false
-    },
     theme: {
       type: String,
       required: false,
       default: 'light'
+    },
+    defaultCollapsed: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
-      stateCollapsed: this.collapsed
+      collapsed: false
     }
   },
   watch: {
-    collapsed: {
-      handler (val) {
-        this.stateCollapsed = val
-      },
-      immediate: true
-    }
-  },
-  created () {
-  },
-  methods: {
-    onCollapse (collapsed) {
+    collapsed (collapsed) {
       this.$emit('collapse', collapsed)
     }
   }
@@ -232,7 +224,7 @@ export default {
   .menu-icon {
     margin-right: 6px;
   }
-.side-menu-fixed {
-  position: fixed;
-}
+  .side-menu-fixed {
+    position: fixed;
+  }
 </style>

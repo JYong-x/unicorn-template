@@ -9,7 +9,6 @@
     <a-layout>
       <side-menu
         theme="light"
-        :collapsed="collapsed"
         @collapse="onCollapse"
       ></side-menu>
       <a-layout-content :style="{paddingLeft: contentPaddingLeft}">
@@ -50,7 +49,6 @@ export default {
   data () {
     return {
       // mixinMenu 中处理菜单数据
-      // systems: {},
       pageTitle: null,
       collapsed: false
     }
@@ -75,7 +73,6 @@ export default {
   created () {
   },
   mounted () {
-    this.tabs = this.directTabs
     this.getPageMeta()
   },
   updated () {
@@ -87,65 +84,64 @@ export default {
     },
     onCollapse (collapsed) {
       this.collapsed = collapsed
-      // this.$store.dispatch('setSidebar', collapsed)
     }
   }
 }
 </script>
 <style lang="scss">
-.ant-layout {
-  background: #e6effa !important;
-  .layout-header {
-    width: 100%;
-    height: 60px;
-    padding: 0;
-    line-height:60px;
-    .global-header {
-      position: fixed;
+  .ant-layout {
+    background: #e6effa !important;
+    .layout-header {
+      width: 100%;
+      height: 60px;
+      padding: 0;
+      line-height:60px;
+      .global-header {
+        position: fixed;
+      }
     }
-  }
-  .ant-layout-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-}
-
-.page {
-  flex: 1;
-  padding: 0 12px 12px;
-  height: 0;
-  .page-container {
-    position: relative;
-    min-height: 100%;
-    padding: 0 24px 24px;
-    background: #fff;
-    border-radius: 6px;
-    .page-head {
-      height: 70px;
-      padding: 24px 0 16px;
-      margin-right: 30%;
-      font-size: 20px;
-      font-weight: 600;
-      color: rgba(0, 0, 0, .85);
-    }
-    .page-body {
+    .ant-layout-content {
+      display: flex;
+      flex-direction: column;
       flex: 1;
     }
   }
-}
 
-.page-transition-enter {
-  opacity: 0;
-}
+  .page {
+    flex: 1;
+    padding: 0 12px 12px;
+    height: 0;
+    .page-container {
+      position: relative;
+      min-height: 100%;
+      padding: 0 24px 24px;
+      background: #fff;
+      border-radius: 6px;
+      .page-head {
+        height: 70px;
+        padding: 24px 0 16px;
+        margin-right: 30%;
+        font-size: 20px;
+        font-weight: 600;
+        color: rgba(0, 0, 0, .85);
+      }
+      .page-body {
+        flex: 1;
+      }
+    }
+  }
 
-.page-transition-leave-active {
-  opacity: 0;
-}
+  .page-transition-enter {
+    opacity: 0;
+  }
 
-.page-transition-enter .page-transition-container,
-.page-transition-leave-active .page-transition-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
+  .page-transition-leave-active {
+    opacity: 0;
+  }
+
+  .page-transition-enter .page-transition-container,
+  .page-transition-leave-active .page-transition-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
 </style>

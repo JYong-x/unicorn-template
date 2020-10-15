@@ -27,6 +27,7 @@ export const examRouters = [
     name: 'index',
     redirect: '/home',
     component: BasicLayout,
+    meta: { title: '主页' },
     children: [
       {
         path: '/home',
