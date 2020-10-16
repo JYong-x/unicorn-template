@@ -265,16 +265,16 @@ export default {
     getPermissionInfo () {
       this.show = true
       this.namespaceCode = this.$route.meta.namespaceCode
-      this.$api.admin.permissionList({ nameSpace: this.namespaceCode }).then(resp => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.permissionList({ nameSpace: this.namespaceCode }).then(res => {
+        if (res) {
           // Dialog数据
-          this.curPermTWrapper = resp.data.curPermTWrapper
+          this.curPermTWrapper = res.curPermTWrapper
           // 权限类别Finder
-          this.krimPermTypeDtoList = resp.data.krimPermTypeDtoList
+          this.krimPermTypeDtoList = res.krimPermTypeDtoList
           // 页面Finder
-          this.permMenuFinders = resp.data.permMenuFinders
+          this.permMenuFinders = res.permMenuFinders
           // 表格数据
-          this.permWrapperGroupByTypes = resp.data.permWrapperGroupByTypes
+          this.permWrapperGroupByTypes = res.permWrapperGroupByTypes
           for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
             this.permWrapperGroupByTypes[i].authorityVOList = []
             if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {
@@ -372,8 +372,8 @@ export default {
     // 删除
     delPermissionList (record, index, item, num, it, i) {
       this.spinning = true
-      this.$api.admin.deletePermission(record.authorityVOList[num].permissionsDetails[i].id).then(resp => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.deletePermission(record.authorityVOList[num].permissionsDetails[i].id).then(res => {
+        if (res) {
           this.permWrapperGroupByTypes[index].authorityVOList[num].permissionsDetails.splice(i, 1)
           this.permWrapperGroupByTypes[index].authorityVOList[num].permissionsDetails = [...this.permWrapperGroupByTypes[index].authorityVOList[num].permissionsDetails]
           this.permWrapperGroupByTypes[index].authorityVOList = [...this.permWrapperGroupByTypes[index].authorityVOList]
@@ -407,9 +407,9 @@ export default {
         this.$api.admin.functionModuleName({
           nameSpace: this.namespaceCode,
           moduleName: functionModule
-        }).then(resp => {
-          if (resp && resp.status === 200) {
-            this.functionModuleNameList = resp.data.data
+        }).then(res => {
+          if (res) {
+            this.functionModuleNameList = res.data
             this.functionModuleList = true
           }
         })
@@ -426,9 +426,9 @@ export default {
               this.$api.admin.functionModuleName({
                 nameSpace: this.namespaceCode,
                 moduleName: functionModule }
-              ).then(resp => {
-                if (resp && resp.status === 200) {
-                  this.functionModuleNameList = resp.data.data
+              ).then(res => {
+                if (res) {
+                  this.functionModuleNameList = res.data
                 }
               })
               this.functionModuleList = true
@@ -436,9 +436,9 @@ export default {
           } else {
             clearTimeout(this.lastTime)
             this.lastTime = setTimeout(() => {
-              this.$api.admin.functionModuleName().then(resp => {
-                if (resp && resp.status === 200) {
-                  this.functionModuleNameList = resp.data.data
+              this.$api.admin.functionModuleName().then(res => {
+                if (res) {
+                  this.functionModuleNameList = res.data
                 }
               })
               this.functionModuleList = true
@@ -493,11 +493,11 @@ export default {
           _this.spinning = true
           if (_this.curPermTWrapper.id) {
             // 修改权限
-            this.putJsonRequest(`/permManage`, _this.curPermTWrapper, userBaseHttp).then((resp) => {
-              if (resp && resp.status === 200) {
+            this.putJsonRequest(`/permManage`, _this.curPermTWrapper, userBaseHttp).then((res) => {
+              if (res) {
                 let str = ''
                 let lineIndex = ''
-                if (_this.rowItemDetail.id === resp.data.data.id) {
+                if (_this.rowItemDetail.id === res.data.id) {
                   _this.originalList.forEach((item) => {
                     if (item.krimPermTWrapperList && item.krimPermTWrapperList.length > 0) {
                       item.krimPermTWrapperList.forEach((line, index) => {
@@ -516,10 +516,10 @@ export default {
                       }
                     })
                     if (str === '类别没变') {
-                      _this.originalList[_this.rowItem.index].krimPermTWrapperList.splice(lineIndex, 0, resp.data.data)
+                      _this.originalList[_this.rowItem.index].krimPermTWrapperList.splice(lineIndex, 0, res.data)
                     }
                     if (str === '模块没变') {
-                      _this.originalList[_this.rowItem.index].krimPermTWrapperList.push(resp.data.data)
+                      _this.originalList[_this.rowItem.index].krimPermTWrapperList.push(res.data)
                     }
                   }
                   if (str === '') {
@@ -538,11 +538,11 @@ export default {
                           }
                         })
                         if (str === '模块变，类别没变') {
-                          item.krimPermTWrapperList.splice(lineIndex, 0, resp.data.data)
+                          item.krimPermTWrapperList.splice(lineIndex, 0, res.data)
                         }
                       }
                       if (str === '模块变更为其他') {
-                        item.krimPermTWrapperList.push(resp.data.data)
+                        item.krimPermTWrapperList.push(res.data)
                       }
                     })
                   }
@@ -550,7 +550,7 @@ export default {
                     const list = {}
                     list.krimPermTWrapperList = []
                     list.functionModuleName = _this.curPermTWrapper.functionModule
-                    list.krimPermTWrapperList.push(resp.data.data)
+                    list.krimPermTWrapperList.push(res.data)
                     _this.originalList.push(list)
                   }
                 }
@@ -558,8 +558,8 @@ export default {
               _this.setPermVOList(_this.originalList)
             })
           } else {
-            this.$api.admin.savePermission(_this.curPermTWrapper).then((resp) => {
-              if (resp && resp.status === 200) {
+            this.$api.admin.savePermission(_this.curPermTWrapper).then((res) => {
+              if (res) {
                 let index = 0
                 let lineIndex = 0
                 _this.originalList.forEach((item, num) => {
@@ -576,11 +576,11 @@ export default {
                       }
                     })
                     if (index === 2) {
-                      item.krimPermTWrapperList.splice(lineIndex, 0, resp.data.data)
+                      item.krimPermTWrapperList.splice(lineIndex, 0, res.data)
                     }
                   }
                   if (index === 1) {
-                    item.krimPermTWrapperList.push(resp.data.data)
+                    item.krimPermTWrapperList.push(res.data)
                     _this.getTabIndex(_this.permWrapperGroupByTypes[num].krimPermTWrapperList)
                   }
                 })
@@ -588,7 +588,7 @@ export default {
                   const list = {}
                   list.krimPermTWrapperList = []
                   list.functionModuleName = _this.curPermTWrapper.functionModule
-                  list.krimPermTWrapperList.push(resp.data.data)
+                  list.krimPermTWrapperList.push(res.data)
                   _this.originalList.push(list)
                 }
                 _this.setPermVOList(_this.originalList)

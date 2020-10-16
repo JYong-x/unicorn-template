@@ -33,9 +33,9 @@ const user = {
     Login ({ commit }, code) {
       return new Promise((resolve, reject) => {
         login.login(code).then(res => {
-          if (res && res.status === 200) {
-            const accessToken = res.data.access_token
-            tokenUtils.savetoken(res.data)
+          if (res) {
+            const accessToken = res.access_token
+            tokenUtils.savetoken(res)
             commit('SET_TOKEN', accessToken)
             resolve()
           }
@@ -48,10 +48,10 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        login.getUserInfo().then(response => {
-          const result = response.data
+        login.getUserInfo().then(res => {
+          // const result = data
 
-          if (result.roleNames && result.roleNames.length > 0) {
+          if (res.roleNames && res.roleNames.length > 0) {
             // const role = result.roleNames
             // role.permissions = result.permissionSet
             // role.permissions.map(per => {
@@ -61,13 +61,13 @@ const user = {
             //   }
             // })
             // role.permissionList = role.permissions.map(permission => { return permission.permissionId })
-            commit('SET_ROLES', result.roleNames)
-            commit('SET_INFO', result)
+            commit('SET_ROLES', res.roleNames)
+            commit('SET_INFO', res)
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
 
-          resolve(result)
+          resolve(res)
         }).catch(error => {
           reject(error)
         })

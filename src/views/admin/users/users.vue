@@ -559,23 +559,23 @@ export default {
       this.instInfoWrapperFilterObj.currentPage = this.pagination.current
       this.instInfoWrapperFilterObj.pageSize = this.pagination.pageSize
       this.instInfoWrapperFilterObj.nameSpace = this.$route.meta.namespaceCode
-      this.$api.admin.userList(this.instInfoWrapperFilterObj).then(resp => {
+      this.$api.admin.userList(this.instInfoWrapperFilterObj).then(res => {
         // 表格数据
-        this.instructorInfoWrappers = resp.data.data.instructorInfoWrapperList
+        this.instructorInfoWrappers = res.data.instructorInfoWrapperList
         // // 学院Finder
-        // this.departmentFinder = resp.data.data.departmentFinder
+        // this.departmentFinder = res.data.departmentFinder
         //
-        // this.finders.departmentFinder = resp.data.data.departmentFinder
+        // this.finders.departmentFinder = res.data.departmentFinder
 
-        this.finders.genderFinder = resp.data.data.genderOptionFinder
+        this.finders.genderFinder = res.data.genderOptionFinder
 
-        this.finders.roleOptionFinder = resp.data.data.roleOptionFinder
+        this.finders.roleOptionFinder = res.data.roleOptionFinder
         this.finders = { ...this.finders }
         // 性别Finder
-        this.instructorGenderFinder = resp.data.data.genderOptionFinder
+        this.instructorGenderFinder = res.data.genderOptionFinder
         // 角色
-        this.roleOptionFinder = resp.data.data.roleOptionFinder
-        this.pagination.total = resp.data.data.totalInstInfoNum
+        this.roleOptionFinder = res.data.roleOptionFinder
+        this.pagination.total = res.data.totalInstInfoNum
         this.getPageSize(this.pagination.total)
         setTimeout(() => {
           this.show = false
@@ -587,10 +587,10 @@ export default {
       })
     },
     getDepartmentFinder () {
-      this.$api.finder.departmentFinder().then((res) => {
-        if (res && res.status === 200) {
-          this.departmentFinder = res.data
-          this.finders.departmentFinder = res.data
+      this.$api.finder.departmentFinder().then(data => {
+        if (data) {
+          this.departmentFinder = data
+          this.finders.departmentFinder = data
         }
       })
     },
@@ -611,15 +611,15 @@ export default {
     },
     // 批量添加教师
     addTeacher () {
-      this.$api.admin.addInstructor({ value: this.nameOrCode }).then((resp) => {
-        if (resp && resp.status === 200) {
-          if (resp.data.data && resp.data.data.length > 1) {
-            this.teacherFinder = resp.data.data
+      this.$api.admin.addInstructor({ value: this.nameOrCode }).then((res) => {
+        if (res) {
+          if (res.data && res.data.length > 1) {
+            this.teacherFinder = res.data
             this.showTeacherFinder = true
-          } else if (resp.data.data && resp.data.data.length === 1) {
-            if (resp.data.data[0].idNumber) {
+          } else if (res.data && res.data.length === 1) {
+            if (res.data[0].idNumber) {
               this.spinningRole = true
-              this.roleInstructorInfoList.push(resp.data.data[0])
+              this.roleInstructorInfoList.push(res.data[0])
               this.getTabIndex(this.roleInstructorInfoList)
               this.roleInstructorInfoList = [...this.roleInstructorInfoList]
               this.nameOrCode = ''
@@ -629,7 +629,7 @@ export default {
             } else {
               this.$message.error('该教师没有统一认证号，不可以添加')
             }
-          } else if (resp.data.data && resp.data.data === 0) {
+          } else if (res.data && res.data === 0) {
             this.$message.error('没找到该教师')
           }
         }
@@ -663,8 +663,8 @@ export default {
       })
       this.userManageVO.instructorInfoWrapperList = this.roleInstructorInfoList
       this.userManageVO.nameSpace = this.$route.meta.namespaceCode
-      this.$api.admin.batchSaveUsers(this.userManageVO).then((resp) => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.batchSaveUsers(this.userManageVO).then((res) => {
+        if (res) {
           this.batchRoleDialog = false
           const listName = []
           this.userManageVO.roleIdList.forEach((item) => {
@@ -720,11 +720,11 @@ export default {
       this.instInfoWrapperFilterObj.pageSize = this.pagination.pageSize
       this.instInfoWrapperFilterObj.currentPage = this.pagination.current
       this.instInfoWrapperFilterObj.nameSpace = this.$route.meta.namespaceCode
-      this.$api.admin.userList(this.instInfoWrapperFilterObj).then((resp) => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.userList(this.instInfoWrapperFilterObj).then((res) => {
+        if (res) {
           // 更新表格数据
-          this.instructorInfoWrappers = resp.data.data.instructorInfoWrapperList
-          this.pagination.total = resp.data.data.totalInstInfoNum
+          this.instructorInfoWrappers = res.data.instructorInfoWrapperList
+          this.pagination.total = res.data.totalInstInfoNum
           setTimeout(() => {
             this.spinning = false
             // 触发表格更新
@@ -792,9 +792,9 @@ export default {
           // 把form中的值 设置到wapper中
           this.spinning = true
           Object.assign(this.toBeAddInstInfoWrapper, values)
-          this.$api.admin.saveUser(this.toBeAddInstInfoWrapper).then((resp) => {
-            if (resp && resp.status === 200) {
-              const data = resp.data.data
+          this.$api.admin.saveUser(this.toBeAddInstInfoWrapper).then((res) => {
+            if (res) {
+              const data = res.data
               const i = this.instructorInfoWrappers.findIndex(ele => ele.id === data.id)
               if (i === -1) {
                 this.instructorInfoWrappers.push(data)

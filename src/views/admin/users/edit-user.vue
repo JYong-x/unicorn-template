@@ -298,10 +298,10 @@ export default {
       this.namespaceCode = this.$route.meta.namespaceCode
       this.instructorId = this.$route.query.id
       const userId = this.$store.state.user.info.code
-      this.$api.admin.userInfo(this.instructorId, { nameSpace: this.namespaceCode, userId: userId }).then(resp => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.userInfo(this.instructorId, { nameSpace: this.namespaceCode, userId: userId }).then(res => {
+        if (res) {
           // 角色表格数据
-          this.krimRoleTDTOs = resp.data.krimRoleTDTOs
+          this.krimRoleTDTOs = res.krimRoleTDTOs
 
           this.krimRoleTDTOs.forEach((item) => {
             if (item.checked === true) {
@@ -309,9 +309,9 @@ export default {
             }
           })
           // 用户信息数据
-          this.selectedInstInfoWrapper = resp.data.selectedInstInfoWrapper
+          this.selectedInstInfoWrapper = res.selectedInstInfoWrapper
           // 管理部门表格数据
-          this.userManageDeptWrapperList = resp.data.userManageDeptWrapperList
+          this.userManageDeptWrapperList = res.userManageDeptWrapperList
           this.refresh()
           this.show = false
         } else {
@@ -321,9 +321,9 @@ export default {
     },
     // 管理部门finder
     getDetpartmentFinder () {
-      this.$api.admin.mangeDepartment({ nameSpace: this.$route.meta.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(resp => {
-        if (resp && resp.status === 200) {
-          this.departmentFinder = resp.data.data
+      this.$api.admin.mangeDepartment({ nameSpace: this.$route.meta.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(res => {
+        if (res) {
+          this.departmentFinder = res.data
         }
       })
     },
@@ -412,9 +412,9 @@ export default {
           Object.assign(this.userManageDeptWrapper, values)
           this.userManageDeptWrapper.nameSpace = this.namespaceCode
           this.userManageDeptWrapper.userId = this.instructorId
-          this.$api.admin.addManageDepartment(this.userManageDeptWrapper).then((resp) => {
-            if (resp && resp.status === 200) {
-              this.userManageDeptWrapperList.push(resp.data.data)
+          this.$api.admin.addManageDepartment(this.userManageDeptWrapper).then((res) => {
+            if (res) {
+              this.userManageDeptWrapperList.push(res.data)
               this.$message.success('编辑成功')
             }
             this.departmentDialog = false
@@ -423,7 +423,7 @@ export default {
     },
     //    删除上课教师标签
     delTag (item, index) {
-      this.$api.admin.deleteDepartment(item.id).then((resp) => {
+      this.$api.admin.deleteDepartment(item.id).then((res) => {
         this.userManageDeptWrapperList.splice(index, 1)
         this.userManageDeptWrapperList = [...this.userManageDeptWrapperList]
       })
@@ -435,8 +435,8 @@ export default {
       this.userManageVO.instructorId = this.selectedInstInfoWrapper.id
       this.userManageVO.roleIdList = []
       this.userManageVO.roleIdList = this.selectedKeys
-      this.$api.admin.saveAssignablePerms(this.selectedInstInfoWrapper.id, this.userManageVO).then((resp) => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.saveAssignablePerms(this.selectedInstInfoWrapper.id, this.userManageVO).then((res) => {
+        if (res) {
           this.refresh()
           this.$message.success('保存成功')
         }
@@ -446,11 +446,11 @@ export default {
       }, 500)
     },
     refresh () {
-      this.$api.admin.refresh({ nameSpace: this.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(resp => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.refresh({ nameSpace: this.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(res => {
+        if (res) {
           // 权限数据
-          this.permWrapperGroupByTypes = resp.data.data
-          this.originalList = deepClone(resp.data.data)
+          this.permWrapperGroupByTypes = res.data
+          this.originalList = deepClone(res.data)
           for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
             this.permWrapperGroupByTypes[i].authorityVOList = []
             if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {

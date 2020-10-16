@@ -26,7 +26,7 @@ function postDownload (url, obj, baseHttp, vm) {
           fileName = decodeURI(fileName.replace('attachment;filename=', ''))
         }
         vm.btnLoading(false)
-        fileDownload(res.data, fileName)
+        fileDownload(res, fileName)
       } else {
         vm.btnLoading(false)
       }
@@ -48,7 +48,7 @@ function getDownload (url, baseHttp, vm) {
           fileName = decodeURI(fileName.replace('attachment;filename=', ''))
         }
         vm.btnLoading(false)
-        fileDownload(res.data, fileName)
+        fileDownload(res, fileName)
       } else {
         vm.btnLoading(false)
       }

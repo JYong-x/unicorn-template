@@ -308,10 +308,10 @@ export default {
     getRoleInfo () {
       this.show = true
       this.namespaceCode = this.$route.meta.namespaceCode
-      this.$api.admin.roleList({ nameSpace: this.namespaceCode }).then(resp => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.roleList({ nameSpace: this.namespaceCode }).then(res => {
+        if (res) {
           // 表格数据
-          this.krim_role_t_dtos = resp.data.krim_role_t_dtos || []
+          this.krim_role_t_dtos = res.krim_role_t_dtos || []
 
           this.krim_role_t_dtos.forEach((item) => {
             item.action = true
@@ -387,9 +387,9 @@ export default {
     },
     getPermissionInfo (item) {
       this.spinningPermission = true
-      this.$api.admin.rolePermissions({ nameSpace: this.namespaceCode, id: item.encryptId }).then(resp => {
+      this.$api.admin.rolePermissions({ nameSpace: this.namespaceCode, id: item.encryptId }).then(res => {
         // 表格数据
-        this.permWrapperGroupByTypes = resp.data.permTWrappers
+        this.permWrapperGroupByTypes = res.permTWrappers
         for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
           this.permWrapperGroupByTypes[i].authorityVOList = []
           if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {
@@ -423,10 +423,10 @@ export default {
     },
     getAddPermissionInfo () {
       this.spinningPermission = true
-      this.$api.admin.roleAddPermissions({ nameSpace: this.namespaceCode }).then(resp => {
-        if (resp && resp.status === 200) {
+      this.$api.admin.roleAddPermissions({ nameSpace: this.namespaceCode }).then(res => {
+        if (res) {
           this.addRole = true
-          this.permWrapperGroupByTypes = resp.data.data
+          this.permWrapperGroupByTypes = res.data
           for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
             this.permWrapperGroupByTypes[i].authorityVOList = []
             if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {
@@ -573,13 +573,13 @@ export default {
           } else {
             this.curRole.permissionIdList = this.defaultHookListId
           }
-          this.$api.admin.saveRole().then((resp) => {
-            if (resp && resp.status === 200) {
-              if (resp.data.code === 'validateFailure') {
-                this.$message.error(resp.data.msg)
+          this.$api.admin.saveRole().then((res) => {
+            if (res) {
+              if (res.code === 'validateFailure') {
+                this.$message.error(res.msg)
               } else {
                 if (this.addRole) {
-                  this.krim_role_t_dtos.push(resp.data.data)
+                  this.krim_role_t_dtos.push(res.data)
                   this.krim_role_t_dtos.forEach((item) => {
                     item.action = true
                   })

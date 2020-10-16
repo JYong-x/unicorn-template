@@ -37,23 +37,26 @@ const toLogin = () => {
 const errorHandle = (status, other) => {
   // 状态码判断
   switch (status) {
-    // 401: 未登录状态，跳转登录页
+    // 401: 无权限，跳转登录页
     case 401:
       toLogin()
       break
     // 403 token过期
     // 清除token并跳转登录页
-    case 403:
-      tip('登录过期，请重新登录')
-      store.dispatch('Logout').then(() => {
-        setTimeout(() => {
-          window.location.reload()
-        }, 1500)
-      })
-      break
+    // case 403:
+    //   tip('登录过期，请重新登录')
+    //   store.dispatch('Logout').then(() => {
+    //     setTimeout(() => {
+    //       window.location.reload()
+    //     }, 1500)
+    //   })
+    //   break
     // 404请求不存在
     case 404:
       tip('请求的资源不存在')
+      break
+    case 405:
+      tip('请求方式错误')
       break
     default:
       console.log(other)
@@ -83,21 +86,21 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   // 请求成功
-  (res) => (res.status === 200 ? Promise.resolve(res) : Promise.reject(res)),
+  (res) => (res.status === 200 ? Promise.resolve(res.data) : Promise.reject()),
   // 请求失败
   (error) => {
     const { response } = error
     if (response) {
       // 请求已发出，但是不在2xx的范围
       errorHandle(response.status, response.data.message)
-      return Promise.resolve(response)
+      return Promise.resolve()
     } else {
       if (!window.navigator.onLine) {
         tip('请检查网路设置')
         // store.commit('changeNetwork', false)
       } else {
         tip('请求失败')
-        return Promise.reject(error)
+        return Promise.reject()
       }
     }
   }
