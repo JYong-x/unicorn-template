@@ -28,7 +28,7 @@
     >
       <template v-for="route of menus">
         <a-sub-menu
-          v-if="!route.hideChildrenInMenu && !route.meta.hidden && route.children && route.children.length"
+          v-if="!route.hideChildrenInMenu && !route.hidden && route.children && route.children.length"
           :key="route.path"
         >
           <span slot="title">
@@ -40,7 +40,7 @@
           </span>
           <template v-for="r of route.children">
             <a-menu-item
-              v-if="!r.meta.hidden"
+              v-if="!r.hidden"
               :key="r.path"
             >
               <router-link
