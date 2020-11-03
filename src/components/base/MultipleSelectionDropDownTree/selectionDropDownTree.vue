@@ -198,8 +198,8 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
     .no-tree-select{
-        ::v-deep .ant-select-arrow{
-            display: none;
-        }
+      ::v-deep .ant-select-arrow{
+        display: none;
+      }
     }
 </style>

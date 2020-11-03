@@ -1,8 +1,8 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 课程
  */
-const cmUrl = config.devUrl
+const cmUrl = httpConfig.appUrl
 const cmRouterMap = [
   {
     path: cmUrl + '/home?methodToCall=getHomePage&amp;viewId=PortalView',
@@ -337,6 +337,7 @@ const cmRouterMap = [
 export default {
   name: '课程/培养方案管理',
   code: 'cm',
+  namespace: 'KR_CM',
   icon: 'icon-kecheng9',
   originRouters: cmRouterMap
 }

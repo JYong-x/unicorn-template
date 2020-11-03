@@ -1,5 +1,5 @@
 import axios from '@/utils/interceptor'
-import config from '@/config'
+import { httpConfig } from '@/config'
 import { getToken } from '@/utils/auth'
 
 // 模块地址
@@ -7,18 +7,18 @@ import { getToken } from '@/utils/auth'
 const login = {
   login: (code) => {
     return axios({
-      url: `${config.accessTokenUri}`,
+      url: `${httpConfig.accessTokenUri}`,
       method: 'post',
       auth: {
-        username: config.clientId,
-        password: config.client_secret
+        username: httpConfig.clientId,
+        password: httpConfig.client_secret
       },
       data: {
-        client_id: config.clientId,
-        client_secret: config.client_secret,
+        client_id: httpConfig.clientId,
+        client_secret: httpConfig.client_secret,
         code: code,
-        redirect_uri: config.redirect_uri,
-        grant_type: config.grant_type
+        redirect_uri: httpConfig.redirect_uri,
+        grant_type: httpConfig.grant_type
       },
       transformRequest: [
         function (data) {
@@ -40,7 +40,7 @@ const login = {
   getUserInfo: () => {
     const token = getToken()
     return axios({
-      url: `${config.userInfoUri}`,
+      url: `${httpConfig.userInfoUri}`,
       method: 'get',
       headers: {
         Accept: 'application/json',
@@ -51,16 +51,16 @@ const login = {
   logout: () => {
     return new Promise(resolve => {
       axios({
-        url: `${config.logoutUri}`,
+        url: `${httpConfig.logoutUri}`,
         method: 'get'
       }).then(res => {
         if (res && res.status === 200) {
           const token = getToken()
           axios({
-            url: `${config.removeTokenUri}?access_token=${token}`,
+            url: `${httpConfig.removeTokenUri}?access_token=${token}`,
             method: 'get',
             params: {
-              redirect_uri: config.useCas ? config.redirect_cas_uri : config.redirect_uri
+              redirect_uri: httpConfig.useCas ? httpConfig.redirect_cas_uri : httpConfig.redirect_uri
             }
           }).then(() => {
             resolve()

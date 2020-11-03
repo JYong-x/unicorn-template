@@ -11,7 +11,8 @@ export default {
   data () {
     return {
       state: '',
-      code: ''
+      code: '',
+      excludeRedirects: ['/login', '/token-index', '/cas', '/logout', '/404']
     }
   },
   mounted () {
@@ -26,7 +27,12 @@ export default {
         return
       }
       this.$store.dispatch('Login', this.code).then(() => {
-        const redirect = localStorage.getItem('redirect')
+        let redirect = sessionStorage.getItem('redirect1')
+        for (let i = 0; i < this.excludeRedirects.length; i++) {
+          if (this.excludeRedirects[i].indexOf(redirect) !== -1) {
+            redirect = '/'
+          }
+        }
         if (redirect) {
           this.$router.push(redirect)
         } else {

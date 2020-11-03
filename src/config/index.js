@@ -1,3 +1,7 @@
-import config from './config'
+import httpConfig from './httpConfig'
+import appConfig from './appConfig'
 
-export default config
+export {
+  httpConfig,
+  appConfig
+}

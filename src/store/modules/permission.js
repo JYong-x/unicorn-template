@@ -1,17 +1,17 @@
 import { examRouters, constantRouters } from '@/router/index'
 import { cm, sms, timetable, sam, tpms, tams, srtp, trpms } from '@/router/modules'
 
-import config from '@/config'
-// import { cmRouterMap } from '@/router/modules/cm'
+import { appConfig } from '@/config'
 
-const curSystem = config.systemCode
+const { systemCode: curSystem, namespace } = appConfig
 const systemList = [
   cm,
   sms,
   timetable,
   {
     name: '排考管理',
-    code: config.systemCode,
+    code: curSystem,
+    namespace: namespace,
     icon: '',
     originRouters: examRouters
   },
@@ -30,13 +30,13 @@ const systemList = [
  * @param route
  * @returns {boolean}
  */
-function hasPermission (permission, route) {
+function hasPermission (permission, route, namespace) {
   if (route.meta && route.meta.permission) {
     let flag = false
     for (let i = 0, len = permission.length; i < len; i++) {
       const nameSpacePermission = []
       route.meta.permission.map(item => {
-        nameSpacePermission.push(item + '&' + route.meta.namespaceCode)
+        nameSpacePermission.push(item + '&' + (route.meta.namespace || namespace))
       })
       flag = nameSpacePermission.includes(permission[i])
       if (flag) {
@@ -48,11 +48,11 @@ function hasPermission (permission, route) {
   return true
 }
 
-function filterAsyncRouter (routerMap, permissions) {
+function filterAsyncRouter (routerMap, permissions, namespace) {
   const accessedRouters = routerMap.filter(route => {
-    if (hasPermission(permissions, route)) {
+    if (hasPermission(permissions, route, namespace)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, permissions)
+        route.children = filterAsyncRouter(route.children, permissions, namespace)
         if (!route.children.length) {
           return false
         }
@@ -91,7 +91,7 @@ const permission = {
         const systems = []
 
         systemList.forEach(system => {
-          const accessedRouters = filterAsyncRouter(system.originRouters, permissions)
+          const accessedRouters = filterAsyncRouter(system.originRouters, permissions, system.namespace)
           if (system.code === curSystem) {
             curSystemRoutes = [...accessedRouters]
           }

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import axios from '@/utils/interceptor'
-import config from '@/config'
+import { httpConfig } from '@/config'
 const qs = require('querystring')
 
-const base = config.baseApi
+const base = httpConfig.baseApi
 
 const get = (url, params = {}, api) => {
   return axios({
@@ -85,8 +85,8 @@ const upload = (url, params, config) => {
   return axios({
     method: 'post',
     data: params,
-    url: `${config.baseUrl || base}${url}`,
-    onUploadProgress: config.onUploadProgress,
+    url: `${(config && config.baseUrl) || base}${url}`,
+    onUploadProgress: config && config.onUploadProgress,
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -116,6 +116,14 @@ const uploadJson = (url, params, api) => {
   })
 }
 
+const deleteRequest = (url, params = {}, api) => {
+  return axios({
+    method: 'delete',
+    params: params,
+    url: `${api || base}${url}`
+  })
+}
+
 const request = {
   get,
   post,
@@ -126,7 +134,8 @@ const request = {
   downloadGet,
   upload,
   uploadPut,
-  uploadJson
+  uploadJson,
+  deleteRequest
 }
 
 export default request

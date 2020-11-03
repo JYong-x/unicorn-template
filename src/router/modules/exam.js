@@ -1,8 +1,8 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 四六级
  */
-const examUrl = config.httpRoot + '/tams/portal'
+const examUrl = httpConfig.appUrl + '/tams/portal'
 const examRouterMap = [
   {
     path: '',
@@ -402,6 +402,7 @@ const examRouterMap = [
 export default {
   name: '四六级考试',
   code: 'exam',
+  namespace: 'KR_EXM',
   icon: 'icon-svgmoban58',
   originRouters: examRouterMap
 }

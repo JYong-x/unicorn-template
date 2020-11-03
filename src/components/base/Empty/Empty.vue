@@ -31,6 +31,5 @@ export default {
         height: 100%;
       }
     }
-    .u-empty-description {}
   }
 </style>

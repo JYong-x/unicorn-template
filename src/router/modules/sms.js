@@ -1,8 +1,8 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 学籍路由
  */
-const smsUrl = config.httpRoot + '/sms/portal'
+const smsUrl = httpConfig.appUrl + '/sms/portal'
 const smsRouterMap = [
   {
     path: smsUrl + '/home?methodToCall=getHomePage&amp;viewId=PortalView',
@@ -951,6 +951,7 @@ const smsRouterMap = [
 export default {
   name: '学籍管理',
   code: 'sms',
+  namespace: 'KR_SMS',
   icon: 'icon-gerenxinxi7',
   originRouters: smsRouterMap
 }

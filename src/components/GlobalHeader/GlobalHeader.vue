@@ -13,7 +13,7 @@
       </div>
       <dropdown-menu class="dropdown-menu"></dropdown-menu>
       <div class="title-top">重庆大学排考管理系统</div>
-      <div class="session"></div>
+      <!--      <session class="session-wrap"></session>-->
     </div>
     <div class="header-right">
       <div class="user-info">

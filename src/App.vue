@@ -22,7 +22,7 @@ export default {
     try {
       document.body.removeChild(document.getElementById('app-loading'))
       // setTimeout(function() {
-      //   document.getElementById('app').style.display = 'block'
+      //   document.getElementById('appConfig').style.display = 'block'
       // }, 500)
     } catch (e) {
       console.log(e)

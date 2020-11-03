@@ -111,7 +111,6 @@ export default {
   .st0{font-family:'FootlightMTLight';}
   .st1{font-size:83.0285px;}
   .st2{fill:gray;}
-
   svg{
     width: 500px;
     height: 300px;
@@ -149,18 +148,14 @@ export default {
   .message::before{
     content:"[";
   }
-
   .message::after, .message::before {
     color: #1890ff;
     font-size: 20px;
     -webkit-animation-name: opacity;
     -webkit-animation-duration: 2s;
     -webkit-animation-iteration-count: infinite;
-    -webkit-animation-name: opacity;
     animation-name: opacity;
-    -webkit-animation-duration: 2s;
     animation-duration: 2s;
-    -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
     margin:0 50px;
   }
@@ -184,10 +179,20 @@ export default {
   }
 
   @keyframes out {
-    0% {r:1;  opacity: 0.9 ;}
-    25%{r:5;  opacity: 0.3 ;}
-    50%{r:10; opacity: 0.2 ;}
-    75%{r:15;opacity:0.1;}
-    100% {r:20;opacity:0;}
+    0% {
+      r:1;
+      opacity: 0.9 ;}
+    25%{
+      r:5;
+      opacity: 0.3 ;}
+    50%{
+      r:10;
+      opacity: 0.2 ;}
+    75%{
+      r:15;
+      opacity:0.1;}
+    100% {
+      r:20;
+      opacity:0;}
   }
 </style>

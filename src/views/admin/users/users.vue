@@ -534,7 +534,7 @@ export default {
       form: this.$form.createForm(this),
       pagination: {
         defaultPageSize: 10,
-        showTotal: total => `共 ${total} 条数据`,
+        showTotal: total => `共 ${total} 条`,
         showSizeChanger: true,
         onShowSizeChange: (current, pageSize) => this.pageSize = pageSize // eslint-disable-line
       }
@@ -558,40 +558,35 @@ export default {
       this.pagination.pageSize = 10
       this.instInfoWrapperFilterObj.currentPage = this.pagination.current
       this.instInfoWrapperFilterObj.pageSize = this.pagination.pageSize
-      this.instInfoWrapperFilterObj.nameSpace = this.$route.meta.namespaceCode
+      this.instInfoWrapperFilterObj.nameSpace = this.$store.state.app.namespace
       this.$api.admin.userList(this.instInfoWrapperFilterObj).then(res => {
+        console.log(res)
         // 表格数据
-        this.instructorInfoWrappers = res.data.instructorInfoWrapperList
+        this.instructorInfoWrappers = res.data.data.instructorInfoWrapperList
         // // 学院Finder
-        // this.departmentFinder = res.data.departmentFinder
+        // this.departmentFinder = resp.data.data.departmentFinder
         //
-        // this.finders.departmentFinder = res.data.departmentFinder
+        // this.finders.departmentFinder = resp.data.data.departmentFinder
 
-        this.finders.genderFinder = res.data.genderOptionFinder
+        this.finders.genderFinder = res.data.data.genderOptionFinder
 
-        this.finders.roleOptionFinder = res.data.roleOptionFinder
+        this.finders.roleOptionFinder = res.data.data.roleOptionFinder
         this.finders = { ...this.finders }
         // 性别Finder
-        this.instructorGenderFinder = res.data.genderOptionFinder
+        this.instructorGenderFinder = res.data.data.genderOptionFinder
         // 角色
-        this.roleOptionFinder = res.data.roleOptionFinder
-        this.pagination.total = res.data.totalInstInfoNum
+        this.roleOptionFinder = res.data.data.roleOptionFinder
+        this.pagination.total = res.data.data.totalInstInfoNum
         this.getPageSize(this.pagination.total)
-        setTimeout(() => {
-          this.show = false
-        }, 500)
+        this.show = false
       }, () => {
-        setTimeout(() => {
-          this.show = false
-        }, 500)
+        this.show = false
       })
     },
     getDepartmentFinder () {
-      this.$api.finder.departmentFinder().then(data => {
-        if (data) {
-          this.departmentFinder = data
-          this.finders.departmentFinder = data
-        }
+      this.$store.dispatch('GetFinder', { finderName: 'department' }).then(data => {
+        this.departmentFinder = data
+        this.finders.departmentFinder = data
       })
     },
     // 开课表格-设置页码
@@ -612,14 +607,14 @@ export default {
     // 批量添加教师
     addTeacher () {
       this.$api.admin.addInstructor({ value: this.nameOrCode }).then((res) => {
-        if (res) {
-          if (res.data && res.data.length > 1) {
-            this.teacherFinder = res.data
+        if (res.data) {
+          if (res.data.data && res.data.data.length > 1) {
+            this.teacherFinder = res.data.data
             this.showTeacherFinder = true
-          } else if (res.data && res.data.length === 1) {
-            if (res.data[0].idNumber) {
+          } else if (res.data.data && res.data.data.length === 1) {
+            if (res.data.data[0].idNumber) {
               this.spinningRole = true
-              this.roleInstructorInfoList.push(res.data[0])
+              this.roleInstructorInfoList.push(res.data.data[0])
               this.getTabIndex(this.roleInstructorInfoList)
               this.roleInstructorInfoList = [...this.roleInstructorInfoList]
               this.nameOrCode = ''
@@ -629,7 +624,7 @@ export default {
             } else {
               this.$message.error('该教师没有统一认证号，不可以添加')
             }
-          } else if (res.data && res.data === 0) {
+          } else if (res.data.data && res.data.data === 0) {
             this.$message.error('没找到该教师')
           }
         }
@@ -662,9 +657,9 @@ export default {
         this.userManageVO.instructorIdList.push(item.id)
       })
       this.userManageVO.instructorInfoWrapperList = this.roleInstructorInfoList
-      this.userManageVO.nameSpace = this.$route.meta.namespaceCode
+      this.userManageVO.nameSpace = this.$store.state.app.namespace
       this.$api.admin.batchSaveUsers(this.userManageVO).then((res) => {
-        if (res) {
+        if (res.data) {
           this.batchRoleDialog = false
           const listName = []
           this.userManageVO.roleIdList.forEach((item) => {
@@ -719,12 +714,12 @@ export default {
       this.spinning = true
       this.instInfoWrapperFilterObj.pageSize = this.pagination.pageSize
       this.instInfoWrapperFilterObj.currentPage = this.pagination.current
-      this.instInfoWrapperFilterObj.nameSpace = this.$route.meta.namespaceCode
+      this.instInfoWrapperFilterObj.nameSpace = this.$store.state.app.namespace
       this.$api.admin.userList(this.instInfoWrapperFilterObj).then((res) => {
-        if (res) {
+        if (res.data) {
           // 更新表格数据
-          this.instructorInfoWrappers = res.data.instructorInfoWrapperList
-          this.pagination.total = res.data.totalInstInfoNum
+          this.instructorInfoWrappers = res.data.data.instructorInfoWrapperList
+          this.pagination.total = res.data.data.totalInstInfoNum
           setTimeout(() => {
             this.spinning = false
             // 触发表格更新
@@ -793,8 +788,8 @@ export default {
           this.spinning = true
           Object.assign(this.toBeAddInstInfoWrapper, values)
           this.$api.admin.saveUser(this.toBeAddInstInfoWrapper).then((res) => {
-            if (res) {
-              const data = res.data
+            if (res.data) {
+              const data = res.data.data
               const i = this.instructorInfoWrappers.findIndex(ele => ele.id === data.id)
               if (i === -1) {
                 this.instructorInfoWrappers.push(data)
@@ -846,7 +841,7 @@ export default {
 }
 </script>
 <style rel="stylesheet/scss" lang="scss">
-  /*@import "common/styles/base.scss";*/
+  /* @import "common/styles/base.scss"; */
   .save-cancel-content{
     overflow: hidden;
     .save-cancel-con-role{
@@ -904,7 +899,7 @@ export default {
 </style>
 <!--修改页面的样式-->
 <style rel="stylesheet/scss" lang="scss" scoped>
-  /*@import "common/styles/base.scss";*/
+  /* @import "common/styles/base.scss"; */
   .content-detail{
     .u-filter{
       margin-bottom: 12px;
@@ -913,16 +908,41 @@ export default {
   .role-dialog-table{
     margin-top: 8px;
   }
+  .experiment-info{
+    > div {
+      > div{
+        &:nth-child(1) {
+          margin-top: 0;
+        }
+      }
+    }
+  }
   .user-content{
+    .experiment-info {
+      padding: 0 0 16px 0;
+      overflow: hidden;
+      transition: height ease .3s;
+      .label-input{
+        width: calc(20% - 10px);
+        display: inline-block;
+      }
+      .search-btn-input{
+        display: inline-block;
+        margin-top: 5px;
+        vertical-align: top;
+      }
+    }
     .content-detail{
       background: #fff;
-      /*margin: 24px;*/
+
+      /* margin: 24px; */
     }
   }
   .loadingText{
     height:65px;
   }
-  /*静态框样式*/
+
+  /* 静态框样式 */
   .modal-body{
     padding: 10px 15px;
     overflow: hidden;
@@ -946,7 +966,6 @@ export default {
   }
   .modal-body-table td{
     line-height: 1.42857143;
-
     text-align: left;
     padding-right: 5px;
   }
@@ -960,13 +979,13 @@ export default {
   .user-option>select{
     border-color: #d2d6de;
   }
-  .user-option>select:focus,
-  .user-input>input:focus{
-    border-color: #1e90ff;
-  }
   .user-input>input{
     border:1px solid #d2d6de;
     padding-left: 12px;
+  }
+  .user-option>select:focus,
+  .user-input>input:focus{
+    border-color: #1e90ff;
   }
   .xin{
     color: #E91E63;
@@ -975,7 +994,8 @@ export default {
   .showDialog{
     opacity: 1;
   }
-  /*end*/
+
+  /* end */
   .table-container{
     table .search-filter {
       th:nth-child(1){
@@ -1003,22 +1023,6 @@ export default {
       }
     }
   }
-  .user-content{
-    .experiment-info {
-      padding: 0 0 16px 0;
-      overflow: hidden;
-      transition: height ease .3s;
-      .label-input{
-        width: calc(20% - 10px);
-        display: inline-block;
-      }
-      .search-btn-input{
-        display: inline-block;
-        margin-top: 5px;
-        vertical-align: top;
-      }
-    }
-  }
   .pull-right{
     float: right;
   }
@@ -1040,15 +1044,5 @@ export default {
     border-radius: 4px;
     cursor: default;
     margin-bottom: 4px;
-    display: inline-block;
-  }
-  .experiment-info{
-    > div {
-      > div{
-        &:nth-child(1) {
-          margin-top: 0;
-        }
-      }
-    }
   }
 </style>

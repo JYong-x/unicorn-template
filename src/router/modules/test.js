@@ -1,6 +1,6 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 
-const testUrl = config.httpRoot + '/test/portal'
+const testUrl = httpConfig.appUrl + '/test/portal'
 const testRouterMap = [
   {
     path: testUrl,
@@ -291,4 +291,11 @@ const testRouterMap = [
   }
 ]
 
-export default testRouterMap
+export default {
+  name: '考试',
+  code: 'tams',
+  namespace: 'KR_TEST',
+  icon: 'icon-jiaoshixinxi',
+  originRouters: testRouterMap
+}
+

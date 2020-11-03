@@ -21,14 +21,22 @@ import {
   Select,
   Table,
   Tooltip,
+  Card,
   Popover,
+  Popconfirm,
   message,
   Modal,
   notification,
   Spin,
   Skeleton,
   Checkbox,
-  Tag
+  Radio,
+  Tag,
+  Row,
+  Col,
+  Upload,
+  List,
+  Divider
 } from 'ant-design-vue'
 
 Vue.use(ConfigProvider)
@@ -44,7 +52,9 @@ Vue.use(Avatar)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(Tooltip)
+Vue.use(Card)
 Vue.use(Popover)
+Vue.use(Popconfirm)
 Vue.use(message)
 Vue.use(Modal)
 Vue.use(notification)
@@ -53,7 +63,13 @@ Vue.use(Drawer)
 Vue.use(Select)
 Vue.use(Skeleton)
 Vue.use(Checkbox)
+Vue.use(Radio)
 Vue.use(Tag)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Upload)
+Vue.use(List)
+Vue.use(Divider)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

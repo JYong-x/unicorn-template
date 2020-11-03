@@ -41,14 +41,14 @@
 </template>
 <script>
 import { downloadFile, setAndDownloadFile, setDownloadFile } from './download'
-import config from '@/config'
+import { httpConfig } from '@/config'
 
 export default {
   name: 'ExportTable',
   props: {
     baseHttp: {
       type: String,
-      default: () => config.baseUrl
+      default: () => httpConfig.baseUrl
     },
     message: {
       type: String,
@@ -145,7 +145,7 @@ export default {
 </script>
 <!--修改页面的样式-->
 <style rel="stylesheet/scss" lang="scss" scoped>
-     .export-table{
-         display: inline-block;
-     }
+      .export-table{
+        display: inline-block;
+      }
 </style>

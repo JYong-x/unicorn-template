@@ -99,25 +99,16 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-
       > div {
         margin: 16px 0;
         font-size: 15px;
       }
-
-      .no-trapezoid-box {
-        .trapezoid-box {
-        }
-      }
-
       .no-data-info {
         color: rgb(144, 147, 153);
       }
-
       .no-data-btn {
         > div {
           margin: 16px 0;
-
           button {
             float: none !important;
             margin: 0 !important;

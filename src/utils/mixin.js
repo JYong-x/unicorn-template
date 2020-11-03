@@ -2,13 +2,13 @@
 // import {DEVICE_TYPE, deviceEnquire} from '@/utils/device'
 import { mapState, mapGetters } from 'vuex'
 import { convertRoutes } from './routeConvert'
-import config from '@/config'
+import { appConfig } from '@/config'
 
 const mixinMenu = {
   data () {
     return {
       oldMenu: ['cm', 'sms', 'timetable', 'tpms', 'tams', 'srtp', 'trpms'],
-      selfSystemCode: config.systemCode,
+      selfSystemCode: appConfig.systemCode,
       menus: [],
       systemList: [],
       openKeys: [],

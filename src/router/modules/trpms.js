@@ -1,8 +1,8 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 教改管理系统路由
  */
-const trpmsUrl = config.httpRoot + '/trpms/portal'
+const trpmsUrl = httpConfig.appUrl + '/trpms/portal'
 
 export const trpmsRouterMap = [
   {
@@ -320,6 +320,7 @@ export const trpmsRouterMap = [
 export default {
   name: '教学项目管理',
   code: 'trpms',
+  namespace: 'KR_TRPMS',
   icon: 'icon-kechengguanli',
   originRouters: trpmsRouterMap
 }

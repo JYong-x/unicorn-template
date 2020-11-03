@@ -29,10 +29,10 @@ export default {
 
 <style lang="scss" scoped>
 .page-header {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    line-height: 40px;
-    padding: 0 12px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 12px;
 }
 </style>

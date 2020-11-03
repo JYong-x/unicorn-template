@@ -1,9 +1,9 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 成绩权限路由
  * @type { *[] }
  */
-const resultUrl = config.httpRoot + '/sam'
+const resultUrl = httpConfig.appUrl + '/sam'
 const resultRouterMap = [
   {
     path: resultUrl + '/Home',
@@ -284,6 +284,7 @@ const resultRouterMap = [
 export default {
   name: '成绩管理',
   code: 'sam',
+  namespace: 'KR_SAM',
   icon: 'icon-server_05',
   originRouters: resultRouterMap
 }

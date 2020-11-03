@@ -1,8 +1,8 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 教师教学档案
  */
-const tpmsUrl = config.httpRoot + '/tpms/portal'
+const tpmsUrl = httpConfig.appUrl + '/tpms/portal'
 const tpmsRouterMap = [
   {
     path: tpmsUrl + '/home?methodToCall=getTPMSHomePage&viewId=PortalView',
@@ -351,6 +351,7 @@ const tpmsRouterMap = [
 export default {
   name: '教师教学档案',
   code: 'tpms',
+  namespace: 'KR_TPMS',
   icon: 'icon-pici',
   originRouters: tpmsRouterMap
 }

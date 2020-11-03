@@ -54,74 +54,68 @@ export default {
 <style lang="scss" scoped>
   .u-tag {
     display: inline-block;
-
     &.u-tag-block {
       white-space: nowrap;
       border-radius: 4px;
       transition: all .3s cubic-bezier(.78, .14, .15, .86);
-
       &.small {
         padding: 0 7px;
         line-height: 20px;
       }
-
       &.middle {
         padding: 0 8px;
         line-height: 24px;
       }
-
       &.large {
         padding: 0 12px;
         line-height: 32px;
       }
-
       &.u-tag-default-status {
         background: #e8e8e8;
       }
 
-      /*草稿*/
+      /* 草稿 */
       &.u-tag-draft {
         background: #8c8c8c;
         color: #fff;
       }
 
-      /*提交*/
+      /* 提交 */
       &.u-tag-submitted {
         background: #40a9ff;
         color: #fff;
       }
 
-      /*审核中*/
+      /* 审核中 */
       &.u-tag-auditing {
         background: #5ad8a6;
         color: #fff;
       }
 
-      /*学院审核*/
+      /* 学院审核 */
       &.u-tag-audit-academy {
         background: #2db7f5;
         color: #fff;
       }
 
-      /*学校审核*/
+      /* 学校审核 */
       &.u-tag--audit-school {
         background: #108ee9;
         color: #fff;
       }
 
-      /*通过*/
+      /* 通过 */
       &.u-tag-pass {
         background: #52c41a;
         color: #fff;
       }
 
-      /*不通过， 不推荐*/
+      /* 不通过， 不推荐 */
       &.u-tag-error {
         background: #f5222d;
         color: #fff;
       }
     }
-
     &.u-tag-text {
       &::before {
         content: '';
@@ -131,55 +125,55 @@ export default {
         margin: 0 2px 2px 0;
         border-radius: 50%;
       }
-
       &.u-tag-default-status {
         &::before {
           background: #e8e8e8;
         }
       }
-      /*草稿*/
+
+      /* 草稿 */
       &.u-tag-draft {
         &::before {
           background: #8c8c8c
         }
       }
 
-      /*提交*/
+      /* 提交 */
       &.u-tag-submitted {
         &::before {
           background: #40a9ff
         }
       }
 
-      /*审核中*/
+      /* 审核中 */
       &.u-tag-auditing {
         &::before {
           background: #5ad8a6
         }
       }
 
-      /*学院审核*/
+      /* 学院审核 */
       &.u-tag-audit-academy {
         &::before {
           background: #2db7f5
         }
       }
 
-      /*学校审核*/
+      /* 学校审核 */
       &.u-tag--audit-school {
         &::before {
           background: #108ee9
         }
       }
 
-      /*通过*/
+      /* 通过 */
       &.u-tag-pass {
         &::before {
           background: #52c41a
         }
       }
 
-      /*不通过， 不推荐*/
+      /* 不通过， 不推荐 */
       &.u-tag-error {
         &::before {
           background: #f5222d

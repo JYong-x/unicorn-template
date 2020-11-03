@@ -1,8 +1,8 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 创新创业
  */
-const srtpUrl = config.httpRoot + '/srtp/portal'
+const srtpUrl = httpConfig.appUrl + '/srtp/portal'
 const srtpRouterMap = [
   {
     path: srtpUrl + '/project?methodToCall=getCommonHome&amp;viewId=ProjectView',
@@ -527,6 +527,7 @@ const srtpRouterMap = [
 export default {
   name: '创新实践平台',
   code: 'srtp',
+  namespace: 'KR_SRTP',
   icon: 'icon-server_05',
   originRouters: srtpRouterMap
 }

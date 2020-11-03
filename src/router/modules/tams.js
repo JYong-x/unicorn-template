@@ -1,9 +1,9 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 助教
  */
-const tamsUrl = config.httpRoot + '/tams/portal'
-const tpmsUrl = config.httpRoot + '/tpms/portal'
+const tamsUrl = httpConfig.appUrl + '/tams/portal'
+const tpmsUrl = httpConfig.appUrl + '/tpms/portal'
 const tamsRouterMap = [
   {
     path: tamsUrl + '/home?methodToCall=getCommonHome&amp;viewId=PortalView',
@@ -488,6 +488,7 @@ const tamsRouterMap = [
 export default {
   name: '助教管理',
   code: 'tams',
+  namespace: 'KR_TAMS',
   icon: 'icon-jiaoshixinxi',
   originRouters: tamsRouterMap
 }

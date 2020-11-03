@@ -1,12 +1,18 @@
 import request from '@/utils/request'
-import config from '@/config'
+import { httpConfig } from '@/config'
 
-const { resourceApi } = config
+const { resourceApi } = httpConfig
 const finder = {
   // 部门finder
-  departmentFinder () {
+  department () {
     const url = `/department/list`
     return request.get(url, {}, resourceApi)
+  },
+
+  // 发布状态
+  releaseStatus () {
+    const url = `/optionFinder/release-status`
+    return request.get(url)
   }
 }
 

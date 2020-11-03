@@ -1,7 +1,7 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 
-const teachEvaUrl = config.httpRoot + '/teach/portal'
-const testUrl = config.httpRoot + '/test/portal'
+const teachEvaUrl = httpConfig.appUrl + '/teach/portal'
+const testUrl = httpConfig.appUrl + '/test/portal'
 const teachEvaRouterMap = [
   {
     path: teachEvaUrl,
@@ -421,4 +421,10 @@ const teachEvaRouterMap = [
   }
 ]
 
-export default teachEvaRouterMap
+export default {
+  name: '教室教学档案',
+  code: 'tams',
+  namespace: 'KR_TEACH',
+  icon: 'icon-jiaoshixinxi',
+  originRouters: teachEvaRouterMap
+}

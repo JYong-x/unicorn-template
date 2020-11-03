@@ -19,7 +19,7 @@ Vue.use(VueRouter)
  *  keepAlive: (false) 缓存路由
  *  icon: (-) 菜单图标(svg)
  *  permission: 权限
- *  namespaceCode: 系统命名空间
+ *  namespace: 系统命名空间(默认系统命名空间，当路由命名空间与系统命名空间不一致时需要添加)
  * }
  */
 
@@ -36,8 +36,8 @@ export const examRouters = [
         name: 'Home',
         x: 1,
         y: 1,
-        meta: { title: '主页', icon: 'icon-zhuye', keepAlive: true, hiddenHeaderContent: true, namespaceCode: 'KR_SRTP' },
-        component: () => import('@/views/Home')
+        meta: { title: '主页', icon: 'icon-zhuye', keepAlive: true, hiddenHeaderContent: true },
+        component: () => import('@/views/home/home')
       },
       {
         path: '/admin',
@@ -50,32 +50,53 @@ export const examRouters = [
           {
             path: '/permission',
             name: 'Permission',
-            meta: { title: '权限', namespaceCode: 'KR_TRN', permission: ['ViewPermissionPage'] },
+            meta: { title: '权限' },
             component: () => import('@/views/admin/permission/permission')
           },
           {
             path: '/role',
             name: 'Role',
-            meta: { title: '角色', namespaceCode: 'KR_TRN', permission: ['ViewRolePage'] },
+            meta: { title: '角色' },
             component: () => import('@/views/admin/role/role')
           },
           {
             path: '/users',
             redirect: '/users',
-            meta: { title: '用户', namespaceCode: 'KR_TRN' },
+            meta: { title: '用户' },
             component: RouteView,
             children: [
               {
                 path: '/users',
                 name: 'Users',
-                meta: { title: '用户', hiddenInBreadcrumb: true, namespaceCode: 'KR_TRN', permission: ['ViewUsersPage'] },
+                meta: { title: '用户', hiddenInBreadcrumb: true },
                 component: () => import('@/views/admin/users/users')
               },
               {
                 path: '/edit-user',
                 name: 'EditUser',
-                meta: { title: '用户编辑', hiddenInBreadcrumb: true, namespaceCode: 'KR_TRN', permission: ['ViewEditUserPage'] },
+                meta: { title: '用户编辑', hiddenInBreadcrumb: true },
                 component: () => import('@/views/admin/users/edit-user')
+              }
+            ]
+          },
+          {
+            path: '/announcement',
+            redirect: '/announcement',
+            meta: { title: '公告管理' },
+            component: RouteView,
+            hiddenChildrenInMenu: true,
+            children: [
+              {
+                path: '/announcement',
+                name: 'Announcement',
+                meta: { title: '公告管理', hiddenInBreadcrumb: true },
+                component: () => import('@/views/admin/announcement/announcement')
+              },
+              {
+                path: '/announcement-edit',
+                name: 'AnnouncementEdit',
+                meta: { title: '公告编辑' },
+                component: () => import('@/views/admin/announcement/announcement-edit')
               }
             ]
           }

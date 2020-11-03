@@ -1,6 +1,7 @@
 <template>
   <a-dropdown
     :trigger="['click']"
+    :get-popup-container="triggerNode => triggerNode"
     placement="bottomRight"
     @visibleChange="visibleChange"
   >
@@ -17,24 +18,33 @@
     <div
       slot="overlay"
       class="dropdown-container"
+      @click.stop
     >
-      <div class="content-item info">
+      <div
+        class="content-item info"
+        @click.stop
+      >
         <div>
           <span class="info-item user-name text-b">{{ user.name }}</span>
           <span class="info-item user-code">{{ user.code }}</span>
         </div>
         <div class="info-item user-department">{{ user.deptName }}</div>
       </div>
-      <div
-        class="content-item btn"
-        @click="logout"
-      >注销</div>
+      <div class="content-item btn-wrap">
+        <a-button
+          :disabled="logoutLoading"
+          :loading="logoutLoading"
+          class="btn"
+          type="link"
+          block
+          @click="logout"
+        >注销</a-button>
+      </div>
     </div>
   </a-dropdown>
 </template>
 
 <script>
-// import config from '@/config'
 export default {
   name: 'User',
   props: {
@@ -45,7 +55,8 @@ export default {
   },
   data () {
     return {
-      visible: false
+      visible: false,
+      logoutLoading: false
     }
   },
   methods: {
@@ -53,9 +64,11 @@ export default {
       this.visible = visible
     },
     logout () {
-      this.visible = false
+      this.logoutLoading = true
       this.$store.dispatch('Logout').then(() => {
-        // window.location.href = `http://${config.localuri}`
+        console.log('退出登录')
+      }).finally(() => {
+        this.logoutLoading = false
       })
     }
   }
@@ -77,8 +90,10 @@ export default {
   .dropdown-container {
     margin-top: -4px;
     background: #fff;
+    border: 1px solid #D9D9D9;
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+
+    /* box-shadow: 0 2px 8px rgba(0,0,0,.15); */
     .content-item {
       padding: 8px 16px;
       .user-name {
@@ -94,17 +109,23 @@ export default {
       }
       &.info {
         line-height: 32px;
+        cursor: default;
       }
-      &.btn {
-        cursor: pointer;
+      &.btn-wrap {
+        padding: 0;
         transition: all .3s;
+        .btn {
+          border-radius: 0;
+          color: rgba(0, 0, 0, .65);
+          text-align: left
+        }
         &:hover {
-          /*background: #e6f7ff;*/
-          background: #f5f5f5;
+          /* color: #33A3FF; */
+          background: #E6EFFA;
         }
       }
     }
-    .content-item:not(:first-child) {
+    .content-item:not(:first-child):not(.btn-wrap) {
       padding-top: 8px;
     }
   }

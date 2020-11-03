@@ -10,6 +10,7 @@ import '@/plugins/antd'
 import '@/components/base'
 import '@/utils/request'
 import '@/api'
+import '@/directive'
 import { Dialog } from '@/components'
 
 import VueStorage from 'vue-ls'

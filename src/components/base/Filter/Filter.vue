@@ -36,8 +36,6 @@
       class="u-filter"
     >
       <a-form
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
         layout="inline"
       >
         <a-row
@@ -46,12 +44,14 @@
         >
           <template v-for="(item, index) of filters || []">
             <a-col
-              v-show="index <= shortNumber || (unfoldFlag?true:advanced)"
               :key="index"
-              :span="colSpan"
+              :xl="stateColSpan(index).xl"
+              :xxl="stateColSpan(index).xxl"
               class="u-filter-col"
             >
               <a-form-item
+                :label-col="labelCol"
+                :wrapper-col="wrapperCol"
                 :label="item.title"
                 class="form-item"
               >
@@ -59,10 +59,17 @@
                   <slot :name="item.slots.default"></slot>
                 </template>
                 <template v-else>
+                  <a-input
+                    v-if="!item.type || item.type === 'input'"
+                    v-model="params[item.field]"
+                    @keyup.enter="filter(item.field)"
+                    @change="item.change ? paramChange($event, item.change) : ''"
+                  ></a-input>
                   <a-select
-                    v-if="item.type === 'select'"
+                    v-else-if="item.type === 'select'"
                     v-model="params[item.field]"
                     show-search
+                    allow-clear
                     option-filter-prop="children"
                     @change="item.change ? paramChange($event, item.change) : ''"
                   >
@@ -75,10 +82,11 @@
                     </a-select-option>
                   </a-select>
                   <a-select
-                    v-if="item.type === 'selectMulti'"
+                    v-else-if="item.type === 'selectMulti'"
                     v-model="params[item.field]"
                     mode="multiple"
                     show-search
+                    allow-clear
                     option-filter-prop="children"
                     @change="item.change ? paramChange($event, item.change) : ''"
                   >
@@ -90,34 +98,31 @@
                     </a-select-option>
                   </a-select>
                   <u-select-tree
-                    v-if="item.type === 'selectTree'"
+                    v-else-if="item.type === 'selectTree'"
                     v-model="params[item.field]"
                     :tree="filterFinders[item.finder] || []"
                     :children-name="item.options.childrenName"
                     :value-type="item.options.valueType ? item.options.valueType : 'string'"
+                    :tree-check-strictly="item.options.treeCheckStrictly"
+                    :default-value="params[item.field] ? params[item.field] : []"
                     @changeValue="item.change ? paramChange($event, item.change) : ''"
                   >
                   </u-select-tree>
                   <a-date-picker
-                    v-if="item.type==='time'"
+                    v-else-if="item.type==='time'"
                     v-model="params[item.field]"
+                    allow-clear
                     style="width: 100%"
                     placeholder="选择日期"
-                    @change="timeFilter($event, item.field)"
+                    @change="timeFilter($event, item.field, item.options)"
                   ></a-date-picker>
-                  <a-input
-                    v-if="!item.type || item.type === 'input'"
-                    v-model="params[item.field]"
-                    @keyup.enter="filter(item.field)"
-                    @change="item.change ? paramChange($event, item.change) : ''"
-                  ></a-input>
                 </template>
               </a-form-item>
             </a-col>
           </template>
           <a-col
-            :span="operatorCol.span"
-            :style="operatorCol.style"
+            :xl="operatorCol.colSpan.xl"
+            :xxl="operatorCol.colSpan.xxl"
             class="u-filter-col"
           >
             <a-form-item
@@ -125,7 +130,10 @@
               class="u-form-item-operator"
             >
               <div class="u-operator-wrap">
-                <div class="u-btn-wrap">
+                <div
+                  :style="operatorCol.style"
+                  class="u-btn-wrap"
+                >
                   <a-button
                     class="u-btn"
                     type="primary"
@@ -182,16 +190,33 @@ export default {
       type: Object,
       default () { return {} }
     },
-    colSpan: {
+    defaultParams: {
+      type: Object,
+      default: null
+    },
+    column: {
       type: [Number],
-      default: 6
+      default: null
+    },
+    gutter: {
+      type: [Number],
+      default: 24
+    },
+    colSpan: {
+      type: Object,
+      default () {
+        return {
+          xl: { span: 8 },
+          xxl: { span: 6 }
+        }
+      }
     },
     labelCol: {
       type: Object,
       default () {
         return {
-          sm: { span: 5 },
-          xs: { span: 8 }
+          xl: { span: 4 },
+          xxl: { span: 6 }
         }
       }
     },
@@ -199,8 +224,8 @@ export default {
       type: Object,
       default () {
         return {
-          sm: { span: 18 },
-          xs: { span: 16 }
+          xl: { span: 19 },
+          xxl: { span: 17 }
         }
       }
     }
@@ -209,37 +234,76 @@ export default {
     return {
       params: {},
       advanced: false,
-      gutter: 24
+      stateWrapperCol: this.wrapperCol,
+      stateLabelCol: this.labelCol
     }
   },
   computed: {
-    shortNumber () {
-      return this.gutter / this.colSpan - 2
+    stateColSpan () {
+      return function (index) {
+        const { xl, xxl } = this.colSpan
+        if (this.column) {
+          xl.span = 24 / this.column
+          xxl.span = 24 / this.column
+          xl.displayIndex = this.column - 2
+          xxl.displayIndex = this.column - 2
+        }
+
+        const stateXl = {
+          span: index > (xl.displayIndex || 1) && !this.unfoldFlag && !this.advanced ? 0 : xl.span
+        }
+        const stateXxl = {
+          span: index > (xxl.displayIndex || 2) && !this.unfoldFlag && !this.advanced ? 0 : xxl.span
+        }
+
+        return {
+          xl: stateXl,
+          xxl: stateXxl
+        }
+      }
     },
+
     operatorCol () {
       let result = {}
-      const result1 = {
-        span: this.colSpan,
-        wrapperCol: {
-          sm: { span: 18, offset: this.labelCol.sm.span },
-          xs: { span: 16, offset: this.labelCol.xs.span }
+      const wrapperCol = {
+        xl: {
+          span: this.stateWrapperCol.xl.span,
+          offset: this.stateLabelCol.xl.span
         },
+        xxl: {
+          span: this.stateWrapperCol.xxl.span,
+          offset: this.stateLabelCol.xxl.span
+        }
+      }
+      const result1 = {
+        colSpan: this.colSpan,
+        wrapperCol: wrapperCol,
         style: {
-          textAlign: 'left'
+          textAlign: 'left',
+          justifyContent: 'flex-start'
         }
       }
       const result2 = {
-        span: 24,
+        colSpan: {
+          xl: { span: 24 },
+          xxl: { span: 24 }
+        },
         wrapperCol: {
-          sm: { span: 24 },
-          xs: { span: 24 }
+          xl: {
+            span: 24
+          },
+          xxl: {
+            span: 24
+          }
         },
         style: {
-          textAlign: 'right'
+          textAlign: 'right',
+          justifyContent: 'flex-end',
+          paddingRight: this.gutter / 2 + 'px'
         }
       }
       if (this.advanced) {
-        if (this.filters.length % (24 / this.colSpan) === 0) {
+        if (this.filters.length % (this.column || 4) === 0) {
           result = result2
         } else {
           result = result1
@@ -260,26 +324,58 @@ export default {
       deep: true
     }
   },
+  created () {
+    if (this.defaultParams) {
+      this.params = Object.assign(this.params, this.defaultParams)
+      this.params = { ...this.params }
+      this.stateWrapperCol = Object.assign(this.stateWrapperCol, this.wrapperCol)
+      this.stateLabelCol = Object.assign(this.stateLabelCol, this.wrapperCol)
+    }
+  },
+  mounted () {
+    this.setLabelStyle()
+  },
   methods: {
+    setLabelStyle () {
+      const span = document.createElement('span')
+      span.id = 'u-filter-tag-wrap'
+      span.style.display = 'absolute'
+      span.style.zIndex = '-100'
+      document.body.appendChild(span)
+
+      const filter = this.$refs.filter
+      const labels = filter.querySelectorAll('.form-item label')
+      const tagWrap = document.getElementById('u-filter-tag-wrap')
+      let maxLabelWidth = 0
+      for (let i = 0; i < labels.length; i++) {
+        const text = labels[i].innerHTML
+        tagWrap.innerHTML = text
+        const w = tagWrap.getBoundingClientRect().width
+        maxLabelWidth = Math.max(maxLabelWidth, w)
+      }
+      const formLabel = filter.querySelectorAll('.form-item .ant-form-item-label')
+      for (let i = 0; i < formLabel.length; i++) {
+        formLabel[i].style.minWidth = maxLabelWidth + 16 + 'px'
+      }
+      document.body.removeChild(tagWrap)
+    },
     paramChange (curValue, fn) {
       this.$emit('filterChange', { fn: fn, value: curValue, filters: { ...this.params }})
     },
     filter (curItem) {
       this.$emit('filter', this.params, curItem)
     },
-    timeFilter (data, params) {
-      const dataString = moment(new Date(data._d)).format('YYYY-MM-DD')
+    timeFilter (data, params, options) {
+      const dataString = moment(new Date(data._d)).format(options.format || 'YYYY-MM-DD')
       this.params[params] = dataString
       this.params = { ...this.params }
     },
     setParams (field, value) {
-      console.log(field, value)
       this.params[field] = value
-      this.params = { ...this.params }
     },
     reset () {
       this.params = {}
-      // this.$emit('reset')
+      this.$emit('reset')
     },
     toggleAdvanced () {
       this.advanced = !this.advanced
@@ -303,58 +399,36 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
   .u-filter {
-    .ant-form-inline{
-      width: 100%;
-    }
-  }
-  </style>
-<style lang="scss" scoped>
-  .u-filter {
-    /*padding-top: 16px;*/
-    /*min-height: 64px;*/
     margin-bottom: 12px;
     background: #fff;
     transition: height .3s;
-    overflow: hidden;
-    .u-filter-col {
-      min-width: 300px;
-    }
-    .form-item {
-      display: flex;
+    ::v-deep .form-item {
+      width: 100%;
       .ant-form-item-label {
-        line-height: 32px;
-        padding-right: 8px;
-        min-width: 100px;
+        min-width: 80px;
       }
       .ant-form-item-control-wrapper {
-        -webkit-box-flex: 1;
-        -ms-flex: 1 1;
-        flex: 1 1;
-        display: inline-block;
-        vertical-align: middle;
-        .ant-form-item-control {
-          height: 32px;
-          line-height: 32px;
-        }
+        min-width: 120px;
       }
     }
     a{
       color: #1890ff;
       text-decoration: none;
+      white-space: nowrap;
     }
   }
   .u-form-item-operator {
     width: 100%;
   }
   .u-operator-wrap {
-    display: inline-block;
-    padding-right: 32px;
-    min-width: 230px;
+    display: flex;
     .u-btn-wrap {
       display: flex;
       height: 40px;
+      width: 100%;
       align-items: center;
     }
     .u-btn {

@@ -57,7 +57,7 @@ export const tokenUtils = {
     if (tokenUtils.tokenPending) return
     tokenUtils.tokenPending = true
     login.refreshToken(tokenUtils.loadToken().refresh_token).then(res => {
-      tokenUtils.savetoken((res))
+      tokenUtils.savetoken((res.data))
     }).catch(err => {
       router.replace({ name: 'login' })
       return Promise.reject(err)

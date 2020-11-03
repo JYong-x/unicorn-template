@@ -25,7 +25,6 @@ export default {
 <style lang="scss" scoped>
 #userLayout.user-layout-wrapper {
   height: 100%;
-
   .container {
     width: 100%;
     min-height: 100%;

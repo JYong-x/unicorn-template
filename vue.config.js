@@ -1,11 +1,11 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
-// const StylelintPlugin = require('stylelint-webpack-plugin')
+const StylelintPlugin = require('stylelint-webpack-plugin')
 
 const path = require('path')
 const resolve = (dir) => path.join(__dirname, dir)
 const IS_PROD = ['production', 'prod', 'isse', 'test'].includes(process.env.NODE_ENV)
-// const IS_DEV = ['development', 'dev'].includes(process.env.NODE_ENV)
+const IS_DEV = ['development', 'dev'].includes(process.env.NODE_ENV)
 
 module.exports = {
   publicPath: IS_PROD ? process.env.VUE_APP_PUBLIC_PATH : '/', // 默认'/'，部署应用包时的基本 URL
@@ -26,17 +26,17 @@ module.exports = {
   },
 
   configureWebpack: (config) => {
-    // const plugins = []
-    // if (IS_DEV) {
-    //   plugins.push(
-    //     new StylelintPlugin({
-    //       files: ['src/**/*.vue', 'src/assets/**/*.scss'],
-    //       failOnError: false,
-    //       fix: true // 打开自动修复（谨慎使用！注意上面的配置不要加入js或html文件，会发生问题，js文件请手动修复）
-    //     })
-    //   )
-    // }
-    // config.plugins = [...config.plugins, ...plugins]
+    const plugins = []
+    if (IS_DEV) {
+      plugins.push(
+        new StylelintPlugin({
+          files: ['src/**/*.vue', 'src/styles/*.scss'],
+          failOnError: false,
+          fix: true // 打开自动修复（谨慎使用！注意上面的配置不要加入js或html文件，会发生问题，js文件请手动修复）
+        })
+      )
+    }
+    config.plugins = [...config.plugins, ...plugins]
 
     // 配置externals,防止打包到bundle中，用cdn形式引入
     // config.externals = {
@@ -158,11 +158,11 @@ module.exports = {
   devServer: {
     overlay: {
       // 让浏览器 overlay 同时显示警告和错误
-      warnings: true,
+      warnings: false,
       errors: true
     },
     open: true, // 是否自动打开浏览器
-    port: '8091', // 代理端口
+    port: '8092', // 代理端口
     https: false,
     hotOnly: true, // 热更新
     proxy: {
@@ -182,6 +182,13 @@ module.exports = {
           '^/auth': '/'
         }
       },
+      // '/proxy-user': {
+      //   target: 'http://10.254.9.31:9090',
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/proxy-user': '/'
+      //   }
+      // },
       '/isse-auth': {
         target: 'https://10.254.9.31:8888',
         changeOrigin: true,

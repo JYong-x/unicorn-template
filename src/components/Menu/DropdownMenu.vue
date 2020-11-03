@@ -189,7 +189,7 @@ export default {
       display: flex;
       flex-direction: column;
       >li {
-        /*width: 20% !important;*/
+        /* width: 20% !important; */
         border-radius: 4px;
         margin: 0 !important;
         color: #262626;

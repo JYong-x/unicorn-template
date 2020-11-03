@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import config from '@/config'
+import { httpConfig } from '@/config'
 const qs = require('querystring')
 export default {
   name: 'CAS',
@@ -17,16 +17,16 @@ export default {
   },
   methods: {
     authLogin () {
-      let authorUrl = config.userAuthorizationUri
+      let authorUrl = httpConfig.userAuthorizationUri
       authorUrl =
           authorUrl +
           ('?' +
             qs.stringify({
-              client_id: config.clientId,
-              response_type: config.response_type,
-              scope: config.scope,
-              state: config.state,
-              redirect_uri: config.redirect_uri
+              client_id: httpConfig.clientId,
+              response_type: httpConfig.response_type,
+              scope: httpConfig.scope,
+              state: httpConfig.state,
+              redirect_uri: httpConfig.redirect_uri
             }))
       window.location.href = authorUrl
     }

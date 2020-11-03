@@ -227,7 +227,6 @@
 <script>
 import deepClone from 'lodash.clonedeep'
 import noTrapezoidImg from './noTrapezoidImg'
-
 const columns = [
   {
     title: '角色名称',
@@ -265,6 +264,7 @@ export default {
   data () {
     return {
       columns,
+      namespace: this.$store.state.app.namespace,
       module: '',
       spinning: false,
       spinningPermission: false,
@@ -307,11 +307,10 @@ export default {
     //    进入页面获取数据
     getRoleInfo () {
       this.show = true
-      this.namespaceCode = this.$route.meta.namespaceCode
-      this.$api.admin.roleList({ nameSpace: this.namespaceCode }).then(res => {
-        if (res) {
+      this.$api.admin.roleList({ nameSpace: this.namespace }).then(res => {
+        if (res.data) {
           // 表格数据
-          this.krim_role_t_dtos = res.krim_role_t_dtos || []
+          this.krim_role_t_dtos = res.data.krim_role_t_dtos || []
 
           this.krim_role_t_dtos.forEach((item) => {
             item.action = true
@@ -387,9 +386,9 @@ export default {
     },
     getPermissionInfo (item) {
       this.spinningPermission = true
-      this.$api.admin.rolePermissions({ nameSpace: this.namespaceCode, id: item.encryptId }).then(res => {
+      this.$api.admin.rolePermissions({ nameSpace: this.namespace, id: item.encryptId }).then(res => {
         // 表格数据
-        this.permWrapperGroupByTypes = res.permTWrappers
+        this.permWrapperGroupByTypes = res.data.permTWrappers || []
         for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
           this.permWrapperGroupByTypes[i].authorityVOList = []
           if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {
@@ -423,10 +422,10 @@ export default {
     },
     getAddPermissionInfo () {
       this.spinningPermission = true
-      this.$api.admin.roleAddPermissions({ nameSpace: this.namespaceCode }).then(res => {
-        if (res) {
+      this.$api.admin.roleAddPermissions({ nameSpace: this.namespace }).then(res => {
+        if (res.data) {
           this.addRole = true
-          this.permWrapperGroupByTypes = res.data
+          this.permWrapperGroupByTypes = res.data.data
           for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
             this.permWrapperGroupByTypes[i].authorityVOList = []
             if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {
@@ -565,7 +564,7 @@ export default {
           const obj = {}
           Object.assign(obj, values)
           // this.selectList.forEach(it=>listId.push(it.id));
-          this.curRole.namespaceCode = this.namespaceCode
+          this.curRole.namespaceCode = this.namespace
           this.curRole.name = obj.name
           this.curRole.type = obj.type
           if (this.addRole) {
@@ -574,12 +573,12 @@ export default {
             this.curRole.permissionIdList = this.defaultHookListId
           }
           this.$api.admin.saveRole().then((res) => {
-            if (res) {
-              if (res.code === 'validateFailure') {
-                this.$message.error(res.msg)
+            if (res.data) {
+              if (res.data.code === 'validateFailure') {
+                this.$message.error(res.data.msg)
               } else {
                 if (this.addRole) {
-                  this.krim_role_t_dtos.push(res.data)
+                  this.krim_role_t_dtos.push(res.data.data)
                   this.krim_role_t_dtos.forEach((item) => {
                     item.action = true
                   })
@@ -618,7 +617,7 @@ export default {
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
-  /*@import "assets/styles/base.scss";*/
+  /* @import "assets/styles/base.scss"; */
   //@include  ant-Status;
   .permission-table-role{
     .ant-checkbox{
@@ -629,7 +628,7 @@ export default {
 </style>
 <style lang="scss" scoped>
   .positionStatus{
-    &:before{
+    &::before{
       width: 6px;
       height: 6px;
       display: inline-block;
@@ -641,7 +640,7 @@ export default {
     }
   }
   .endStatus{
-    &:before{
+    &::before{
       background: #52c41a;
     }
   }
@@ -653,6 +652,55 @@ export default {
     border-top: 1px solid #e8e8e8;
     >button{
       margin-left: 8px;
+    }
+  }
+  .content-role{
+    overflow: hidden;
+    .top-btn{
+      text-align: right;
+    }
+    >div{
+      width: calc(50% - 12px);
+      padding: 24px;
+      background-color: #fff;
+      border: 1px #e8e8e8 solid;
+      border-radius: 4px;
+    }
+    .content-detail-left{
+      float: left;
+    }
+    .content-detail-right{
+      overflow: hidden;
+      float: right;
+      .footer-button{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid #e8e8e8;
+        padding: 10px 16px;
+        text-align: right;
+        right: 0;
+        background: #fff;
+        border-radius: 0 0 4px 4px;
+        z-index: 1;
+        margin: 0;
+      }
+      .title{
+        padding-top: 8px;
+        font-size: 17px;
+        font-weight: bold;
+      }
+      .tipsContainer{
+        font-size:70px;
+        color: #ffc069;
+        width: 100%;
+        text-align: center;
+      }
+      .tipsContentText{
+        font-size: 17px;
+        color: rgb(96, 98, 102);
+        text-align: center;
+      }
     }
   }
   .permission-table-role{
@@ -706,13 +754,8 @@ export default {
   .roleTable{
     padding: 16px 0 0 0;
   }
-  /*@import "assets/styles/base.scss";*/
-  .container-box{
-    //@include box;
-  }
-  .table-container {
-    //@include tableTwo;
-  }
+
+  /* @import "assets/styles/base.scss"; */
   .btn-right{
     float: right;
   }
@@ -735,7 +778,7 @@ export default {
     }
     .label-input{
       display: inline-block;
-      width: calc(50% - 12px)!important;
+      width: calc(50% - 12px) !important;
       margin-right: 12px;
       .ant-form-item{
         margin-bottom: 0;
@@ -744,57 +787,6 @@ export default {
         width: 70%;
       }
     }
-  }
-  .content-role{
-    overflow: hidden;
-    .top-btn{
-      text-align: right;
-    }
-    >div{
-      width: calc(50% - 12px);
-      padding: 24px;
-      background-color: #fff;
-      border: 1px #e8e8e8 solid;
-      border-radius: 4px;
-    }
-    .content-detail-left{
-      float: left;
-    }
-    .content-detail-right{
-      overflow: hidden;
-      float: right;
-      .footer-button{
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        border-top: 1px solid #e8e8e8;
-        padding: 10px 16px;
-        text-align: right;
-        right: 0;
-        background: #fff;
-        border-radius: 0 0 4px 4px;
-        z-index: 1;
-        margin: 0;
-      }
-      .title{
-        padding-top: 8px;
-        font-size: 17px;
-        font-weight: bold;
-      }
-      .tipsContainer{
-        font-size:70px;
-        color: #ffc069;
-        width: 100%;
-        text-align: center;
-      }
-      .tipsContentText{
-        font-size: 17px;
-        color: rgb(96, 98, 102);
-        text-align: center;
-      }
-    }
-  }
-  @media screen and (max-width: 1795px) {
   }
   @media screen and (max-width: 1380px) {
     .permission-table-role{

@@ -106,7 +106,6 @@ export default {
     flex: 1;
   }
 }
-
 .page {
   flex: 1;
   padding: 0 12px 12px;
@@ -130,15 +129,12 @@ export default {
     }
   }
 }
-
 .page-transition-enter {
   opacity: 0;
 }
-
 .page-transition-leave-active {
   opacity: 0;
 }
-
 .page-transition-enter .page-transition-container,
 .page-transition-leave-active .page-transition-container {
   -webkit-transform: scale(1.1);

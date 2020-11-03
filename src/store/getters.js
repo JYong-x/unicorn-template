@@ -6,7 +6,13 @@ const getters = {
   userInfo: state => state.user.info,
   addRouters: state => state.permission.addRouters,
 
-  curSystem: state => state.app.curSystem
+  curSystem: state => state.app.curSystem,
+
+  finder: state => {
+    return function (finderName) {
+      return state.finders[finderName]
+    }
+  }
 }
 
 export default getters

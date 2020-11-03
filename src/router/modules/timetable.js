@@ -1,9 +1,9 @@
-import config from '@/config'
+import { httpConfig } from '@/config'
 /**
  * 排课权限路由
  * @type { *[] }
  */
-const timeUrl = config.httpRoot + `/${process.env === 'production' ? 'tt' : 'timetable'}`
+const timeUrl = httpConfig.appUrl + `/${process.env === 'production' ? 'tt' : 'timetable'}`
 const timeTableRouterMap = [
   {
     path: timeUrl + '/Home',
@@ -727,6 +727,7 @@ const timeTableRouterMap = [
 export default {
   name: '排课管理',
   code: 'timetable',
+  namespace: 'KR_TT',
   icon: 'icon-server_05',
   originRouters: timeTableRouterMap
 }

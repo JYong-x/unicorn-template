@@ -86,21 +86,21 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   // 请求成功
-  (res) => (res.status === 200 ? Promise.resolve(res.data) : Promise.reject()),
+  (response) => (response.status === 200 ? Promise.resolve(response) : Promise.reject(response)),
   // 请求失败
   (error) => {
     const { response } = error
     if (response) {
       // 请求已发出，但是不在2xx的范围
       errorHandle(response.status, response.data.message)
-      return Promise.resolve()
+      return Promise.resolve(response)
     } else {
       if (!window.navigator.onLine) {
         tip('请检查网路设置')
         // store.commit('changeNetwork', false)
       } else {
         tip('请求失败')
-        return Promise.reject()
+        return Promise.reject(error)
       }
     }
   }

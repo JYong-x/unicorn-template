@@ -132,8 +132,6 @@ export default {
         padding: 0 0 0 16px !important;
         line-height: 32px;
         border-radius: 6px;
-        >a {
-        }
       }
       .ant-menu-submenu-selected {
         color: #05a;
@@ -172,58 +170,58 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-  .layout-side {
-    height: calc(100% - 60px);
-    min-height: calc(100% - 60px);
-    z-index: 99;
-  }
-  .trigger {
-    display: flex;
-    align-items: center;
+.layout-side {
+  height: calc(100% - 60px);
+  min-height: calc(100% - 60px);
+  z-index: 99;
+}
+.trigger {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  z-index: 100;
+  width: 11px;
+  height: 48px;
+  color: rgba(0, 0, 0, .65);
+  font-size: 12px;
+  line-height: 48px;
+  text-align: center;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  transform: translateY(-50%);
+  &::before {
+    content: '';
+    display: block;
     position: absolute;
-    top: 50%;
-    right: -10px;
-    z-index: 100;
-    width: 11px;
-    height: 48px;
-    color: rgba(0, 0, 0, .65);
-    font-size: 12px;
-    line-height: 48px;
-    text-align: center;
-    background: #fff;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    transform: translateY(-50%);
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      border-top: 10px solid #e6effa;
-      border-left: 10px solid transparent;
-    }
-    &::after {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      border-bottom: 10px solid #e6effa;
-      border-left: 10px solid transparent;
-    }
-    &:hover {
-      color: #fff;
-      background: #05a;
-    }
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 10px solid #e6effa;
+    border-left: 10px solid transparent;
   }
-  .menu-icon {
-    margin-right: 6px;
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 10px solid #e6effa;
+    border-left: 10px solid transparent;
   }
+  &:hover {
+    color: #fff;
+    background: #05a;
+  }
+}
+.menu-icon {
+  margin-right: 6px;
+}
 .side-menu-fixed {
   position: fixed;
 }

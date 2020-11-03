@@ -1,7 +1,7 @@
 import request from '@/utils/request'
-import config from '@/config'
+import { httpConfig } from '@/config'
 
-const { userApi, commonApi } = config
+const { userApi, commonApi } = httpConfig
 
 const admin = {
   /**
@@ -42,7 +42,7 @@ const admin = {
 
   // 角色权限信息
   rolePermissions (params) {
-    const url = `/role`
+    const url = `/role/update`
     return request.get(url, params, userApi)
   },
 
@@ -118,7 +118,47 @@ const admin = {
   // refresh
   refresh (params) {
     const url = `/userManage/user-nameSpace/permission`
-    return request.postJson(url, params, userApi)
+    return request.get(url, params, userApi)
+  },
+
+  /**
+   * announcement
+   */
+  // 公告列表
+  announcementList (params) {
+    const url = `/announcement/filter`
+    return request.get(url, params)
+  },
+
+  // 公告详情
+  announcementDetail (announcementId) {
+    const url = `/announcement/single/${announcementId}`
+    return request.get(url)
+  },
+
+  // 下载公告附件
+  downloadAttachment (attachmentId) {
+    const url = `/single/download?attachmentId=${attachmentId}`
+    return request.download(url, {})
+  },
+
+  // 删除公告
+  deleteAnnouncement (announcementId) {
+    const url = `/announcement/single-del/${announcementId}`
+    return request.post(url, {})
+  },
+
+  // 发布公告
+  releaseAnnouncement (params) {
+    const url = `/announcement/section/release`
+    return request.postJson(url, params)
+  },
+
+  // 编辑页的公告发布|保存
+  submitAnnouncement (formData) {
+    console.log(formData)
+    const url = `/announcement/single/save`
+    return request.upload(url, formData)
   }
 }
 

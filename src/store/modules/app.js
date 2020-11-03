@@ -1,10 +1,12 @@
 // 应用相关的配置（用户定义的配置，默认配置）
-import config from '@/config'
+import { appConfig } from '@/config'
+console.log(appConfig)
 
 const app = {
   state: {
     sidebarCollapsed: true,
-    curSystem: config.systemCode
+    curSystem: appConfig.systemCode,
+    namespace: appConfig.namespace
   },
   mutations: {
     SIDEBAR_COLLAPSED: (state, collapsed) => {

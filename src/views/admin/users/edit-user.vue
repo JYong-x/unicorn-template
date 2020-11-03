@@ -60,7 +60,7 @@
                   </a-tag>
                 </span>
                 <a-tag
-                  style="background: #fff; borderStyle: dashed;"
+                  style="background: #fff; border-style: dashed;"
                   @click="addDiaLog"
                 >
                   <a-icon type="plus"></a-icon>
@@ -295,13 +295,13 @@ export default {
     getUserDetail () {
       this.show = true
       this.showPerm = true
-      this.namespaceCode = this.$route.meta.namespaceCode
+      this.namespaceCode = this.$store.state.app.namespace
       this.instructorId = this.$route.query.id
       const userId = this.$store.state.user.info.code
       this.$api.admin.userInfo(this.instructorId, { nameSpace: this.namespaceCode, userId: userId }).then(res => {
-        if (res) {
+        if (res.data) {
           // 角色表格数据
-          this.krimRoleTDTOs = res.krimRoleTDTOs
+          this.krimRoleTDTOs = res.data.krimRoleTDTOs
 
           this.krimRoleTDTOs.forEach((item) => {
             if (item.checked === true) {
@@ -309,9 +309,9 @@ export default {
             }
           })
           // 用户信息数据
-          this.selectedInstInfoWrapper = res.selectedInstInfoWrapper
+          this.selectedInstInfoWrapper = res.data.selectedInstInfoWrapper
           // 管理部门表格数据
-          this.userManageDeptWrapperList = res.userManageDeptWrapperList
+          this.userManageDeptWrapperList = res.data.userManageDeptWrapperList
           this.refresh()
           this.show = false
         } else {
@@ -321,9 +321,9 @@ export default {
     },
     // 管理部门finder
     getDetpartmentFinder () {
-      this.$api.admin.mangeDepartment({ nameSpace: this.$route.meta.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(res => {
-        if (res) {
-          this.departmentFinder = res.data
+      this.$api.admin.mangeDepartment({ nameSpace: this.$store.state.app.namespace, userId: this.selectedInstInfoWrapper.id }).then(res => {
+        if (res.data) {
+          this.departmentFinder = res.data.data
         }
       })
     },
@@ -413,8 +413,8 @@ export default {
           this.userManageDeptWrapper.nameSpace = this.namespaceCode
           this.userManageDeptWrapper.userId = this.instructorId
           this.$api.admin.addManageDepartment(this.userManageDeptWrapper).then((res) => {
-            if (res) {
-              this.userManageDeptWrapperList.push(res.data)
+            if (res.data) {
+              this.userManageDeptWrapperList.push(res.data.data)
               this.$message.success('编辑成功')
             }
             this.departmentDialog = false
@@ -436,7 +436,7 @@ export default {
       this.userManageVO.roleIdList = []
       this.userManageVO.roleIdList = this.selectedKeys
       this.$api.admin.saveAssignablePerms(this.selectedInstInfoWrapper.id, this.userManageVO).then((res) => {
-        if (res) {
+        if (res.data) {
           this.refresh()
           this.$message.success('保存成功')
         }
@@ -447,10 +447,10 @@ export default {
     },
     refresh () {
       this.$api.admin.refresh({ nameSpace: this.namespaceCode, userId: this.selectedInstInfoWrapper.id }).then(res => {
-        if (res) {
+        if (res.data) {
           // 权限数据
-          this.permWrapperGroupByTypes = res.data
-          this.originalList = deepClone(res.data)
+          this.permWrapperGroupByTypes = res.data.data
+          this.originalList = deepClone(res.data.data)
           for (let i = 0; i < this.permWrapperGroupByTypes.length; i++) {
             this.permWrapperGroupByTypes[i].authorityVOList = []
             if (this.permWrapperGroupByTypes[i] && this.permWrapperGroupByTypes[i].krimPermTWrapperList.length > 0) {
@@ -608,7 +608,8 @@ export default {
     }
     .content-detail-cont{
       background: #fff;
-      /*margin-top: 25px;*/
+
+      /* margin-top: 25px; */
       overflow: hidden;
       >button{
         margin: 0 10px 10px 10px;
@@ -662,14 +663,8 @@ export default {
       float: right;
     }
   }
-  .container-box{
-    //@include box;
-  }
-  .table-container {
-    //@include tableTwo;
-  }
   .table-container{
-    padding: 0px;
+    padding: 0;
   }
   .col-6{
     width: calc(50% - 10px);
@@ -682,7 +677,6 @@ export default {
   .no-right-margin{
     margin-right: 0;
   }
-
   .title-info>h3{
     font-size: 19px;
     margin-left: 5px;
@@ -694,7 +688,6 @@ export default {
   .min-height{
     min-height: 620px;
   }
-
   .user-info-box{
     width: 90%;
     margin: 10px auto;
@@ -717,7 +710,6 @@ export default {
     font-weight: bold;
     text-align: left;
   }
-
   .del-icon{
     display: inline-block;
     width: 26px;
@@ -729,47 +721,53 @@ export default {
     margin: 0 5px;
     border-radius: 5px;
     cursor: pointer;
-  }
-  .del-icon{
     background-color: #D15B47;
   }
   .table-2{
     width: 50%;
   }
+  .permission-input>input{
+    width: 100%;
+    height:32px;
+    outline: none;
+    padding-left: 8px;
+  }
+  .permission-option>select{
+    border-color: #d2d6de;
+  }
+  .permission-option>select:focus,
+  .permission-input>input{
+    border:1px solid #d2d6de;
+    padding-left: 12px;
+  }
+  .permission-input>input:focus{
+    border-color: #1e90ff;
+  }
   .userRole{
-    padding: 0px;
+    padding: 0;
     table tbody tr{
       height: 30px;
       line-height: 30px;
       >td:first-child input{
-        height: 30px!important;
-        line-height: 30px!important;
+        height: 30px !important;
+        line-height: 30px !important;
       }
     }
   }
   .assignablePermissions{
-    padding: 0px;
+    padding: 0;
     table tbody tr{
       height: 30px;
       line-height: 30px;
       >td:first-child input{
-        height: 30px!important;
-        line-height: 30px!important;
+        height: 30px !important;
+        line-height: 30px !important;
       }
     }
   }
   .userRoleInfo{
     padding-bottom: 0;
     min-height: 250px;
-    .content-row:first-child{
-      margin-top: 5px;
-    }
-    .content-row:last-child{
-      margin-bottom: 5px;
-    }
-    .user-info-box{
-      width: 100%;
-    }
     .content-row{
       height: 35px;
       line-height: 35px;
@@ -784,8 +782,18 @@ export default {
         text-align: center;
       }
     }
+    .content-row:first-child{
+      margin-top: 5px;
+    }
+    .content-row:last-child{
+      margin-bottom: 5px;
+    }
+    .user-info-box{
+      width: 100%;
+    }
   }
-  /*静态框样式*/
+
+  /* 静态框样式 */
   .modal-body{
     padding: 10px 15px;
     overflow: hidden;
@@ -804,35 +812,15 @@ export default {
     text-align: right;
     background-color: #f5f5f5;
     line-height: 1.42857143;
-
     padding-left: 5px;
   }
   .modal-body-table td{
     line-height: 1.42857143;
-
     text-align: left;
     padding-right: 5px;
   }
-  .permission-option>select,
-  .permission-input>input{
-    width: 100%;
-    height:32px;
-    outline: none;
-    padding-left: 8px;
-  }
-  .permission-option>select{
-    border-color: #d2d6de;
-  }
   .permission-option>.el-select {
     width:100%;
-  }
-  .permission-option>select:focus,
-  .permission-input>input:focus{
-    border-color: #1e90ff;
-  }
-  .permission-input>input{
-    border:1px solid #d2d6de;
-    padding-left: 12px;
   }
   .xin{
     color: #E91E63;
@@ -852,5 +840,6 @@ export default {
     line-height: 53px;
     z-index: 10;
   }
-  /*end*/
+
+  /* end */
 </style>
